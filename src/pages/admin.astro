@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/common/Header.astro';
+import Footer from '../components/common/Footer.astro';
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const guide = await reader.singletons.guide.read();
+const settings = await reader.singletons.settings.read();
+
+const logoUrl = 'https://lh3.googleusercontent.com/aida/AP1WRLv-auhEXEYBuE8g7TwTMU2UFfhUG9gA1b8D_iNIvjS5NLvMO3AKxSYhxJL-BYQlnUfOlEVdJODwsztw4d_poqtcwcMH_8OOs-mMu61Iu64JCECiqVJHBOha78TPB23_F9k46jYIbNMHmgMLQztOlefqZtujkE2fXKG1eA8w-yVkhwyDJpcp_7Uts5XuGj7mocZPvFZUO--iLyJnPCg4i3BXzW3zQiMhzrocgDs2lmmOH_8P9YQru2uuSw';
+const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com';
+const cvr = settings?.cvr || '86561844';
+const address = settings?.address || 'Rosensgade 83, 8300 Odder';
+const phone = settings?.phone || '86561844';
+
+const forEditors = guide?.forEditors || `1. Opret en gratis konto på https://github.com/join med din egen e-mailadresse.
+2. Send dit GitHub-brugernavn til webansvarlig (eller formand for støtteforeningen).
+3. Webansvarlig inviterer dig som "Collaborator" til projektet.
+4. Acceptér invitationen i din mail.
+5. Log ind på /keystatic med din GitHub-konto.
+6. Alle ændringer du gemmer bliver automatisk opdateret på hjemmesiden efter ca. 1 minut!`;
+
+const forDevelopers = guide?.forDevelopers || `1. Gå til GitHub: https://github.com/PretiumBusiness/rathlouskolensstoetteforening/settings/access
+2. Klik på "Add people" og søg efter brugerens GitHub-brugernavn eller e-mail.
+3. Vælg rollen "Write" (giver adgang til at redigere indhold via Keystatic CMS).
+4. Brugeren modtager en invitationsmail og kan herefter logge ind direkte på https://www.rathlouskolensstøtteforening.dk/keystatic.`;
+
+const tipsAndTricks = guide?.tipsAndTricks || `• MobilePay: Du kan bruge @mobilepay i instruktionsteksten, så indsættes nummeret automatisk med fed skrift.
+• Dokumenter: Uploader du en PDF-fil overskriver den automatisk et indsat link. Sletter du PDF-filen falder den tilbage på linket.
+• Galleri: Galleriet og menupunktet skjules automatisk, hvis der ikke er tilføjet billeder. Når du uploader billeder, vises de med paginering og fuldskærms-visning.`;
+---
+
+<Layout title="Administration & Redaktørguide — Rathlouskolens Støtteforening" description="Vejledning til redigering og administration af hjemmesiden">
+  <Header logoUrl={logoUrl} />
+
+  <main class="max-w-container-max mx-auto px-4 md:px-6 py-12 md:py-16">
+    <!-- Header Banner -->
+    <div class="bg-sky-tint p-8 md:p-12 rounded-2xl border border-primary-fixed-dim text-center mb-12">
+      <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-3">
+        <span class="material-symbols-outlined text-sm" aria-hidden="true">admin_panel_settings</span>
+        CMS Administration
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold text-primary mb-3">
+        Administration & Redaktørportal
+      </h1>
+      <p class="text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto mb-6">
+        Her finder du vejledning til at logge ind og redigere indhold på hjemmesiden for Rathlouskolens Støtteforening.
+      </p>
+
+      <a
+        href="/keystatic"
+        class="inline-flex items-center gap-2 bg-primary text-on-primary font-semibold px-8 py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md text-base"
+      >
+        <span>Gå til Keystatic CMS Redigering</span>
+        <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Instruction Cards -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <!-- For Editors -->
+      <div class="bg-white p-6 md:p-8 rounded-xl border border-outline-variant/60 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-sky-tint text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">person</span>
+          </div>
+          <h2 class="text-xl font-semibold text-on-surface">For Redaktører & Bestyrelse</h2>
+        </div>
+        <p class="text-sm text-on-surface-variant mb-4 font-medium">
+          Sådan får du adgang og logger ind for at rette tekster, billeder og dokumenter:
+        </p>
+        <div class="text-sm text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface-neutral p-4 rounded-lg border border-surface-variant font-mono text-xs md:text-sm">
+          {forEditors}
+        </div>
+      </div>
+
+      <!-- For Developers / Admins -->
+      <div class="bg-white p-6 md:p-8 rounded-xl border border-outline-variant/60 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-sky-tint text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">manage_accounts</span>
+          </div>
+          <h2 class="text-xl font-semibold text-on-surface">For Webansvarlig / Udvikler</h2>
+        </div>
+        <p class="text-sm text-on-surface-variant mb-4 font-medium">
+          Sådan tildeler du adgang til nye bestyrelsesmedlemmer:
+        </p>
+        <div class="text-sm text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface-neutral p-4 rounded-lg border border-surface-variant font-mono text-xs md:text-sm">
+          {forDevelopers}
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips & Tricks -->
+    <div class="bg-surface-neutral p-6 md:p-8 rounded-xl border border-surface-variant">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">lightbulb</span>
+        <h3 class="text-lg font-semibold text-primary">Gode råd til indhold & opdateringer</h3>
+      </div>
+      <div class="text-sm md:text-base text-on-surface-variant leading-relaxed whitespace-pre-line">
+        {tipsAndTricks}
+      </div>
+    </div>
+  </main>
+
+  <Footer
+    address={address}
+    phone={phone}
+    email={grantEmail}
+    cvr={cvr}
+  />
+</Layout>
