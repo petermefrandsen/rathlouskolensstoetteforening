@@ -55,9 +55,16 @@ const termsHref = (settings?.termsFile && settings.termsFile.trim())
 
 const hasGallery = galleryImages.length > 0;
 
-// MobilePay Instructions formatting: replaces @mobilepay placeholder or defaults cleanly
-const rawMobilePayInstructions = settings?.mobilePayInstructions || 'Scan QR-koden med MobilePay eller overfør til boks @mobilepay';
-const mobilePayParts = rawMobilePayInstructions.split('@mobilepay');
+const okTitle = settings?.okTitle || 'Støt Rathlouskolen med OK';
+const okSubtitle = settings?.okSubtitle || 'Støt Rathlouskolens Støtteforening kvit og frit, hver gang du tanker, lader eller vasker hos OK.';
+const okInfoText = settings?.okInfoText || 'Når du tilknytter dit OK Benzinkort eller OK Appen til Rathlouskolens Støtteforening (Sponsornummer: 56 16 02), støtter OK vores forening uden at det koster dig en ekstra øre.';
+const okSponsorNumber = settings?.okSponsorNumber || '56 16 02';
+const okLink = settings?.okLink || 'https://www.ok.dk/privat/hjaelp/stoet-lokalt/hvordan-stoetter-jeg-lokalt-med-ok';
+const okBanner = settings?.okBanner || '/images/support/ok-banner.png';
+const okLogo = settings?.okLogo || '/images/support/ok-logo.svg';
+
+const donationTitle = settings?.donationTitle || 'Giv et engangsbidrag';
+const donationText = settings?.donationText || 'Ønsker du eller din virksomhed at støtte med et valgfrit beløb, sponsorat eller gave? Alle bidrag gør en direkte forskel for elever og skole.';
 ---
 
 <Layout title={heroTitle} description={heroSubtitle}>
@@ -106,44 +113,163 @@ Foreningens indtægter opstår ved forskellige arrangementer afholdt af Støttef
       <QuoteCarousel quotes={quotes} />
     </section>
 
-    <!-- Membership CTA -->
-    <section class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 bg-sky-tint p-6 md:p-16 rounded-xl border border-primary-fixed-dim text-center" id="bliv-medlem">
-      <h2 class="text-2xl md:text-3xl font-semibold text-primary mb-2">
-        Meld dig ind i dag
-      </h2>
-      <p class="text-base md:text-lg text-on-surface-variant mb-6">
-        {membershipFee}
-      </p>
-
-      <div class="flex flex-col items-center justify-center gap-4">
-        <div class="bg-white p-3 rounded-lg shadow-sm">
-          <img
-            class="w-40 h-40 md:w-48 md:h-48 object-cover rounded"
-            alt="MobilePay QR-kode til medlemskab"
-            src={mobilePayQr}
-          />
-        </div>
-        <p class="text-sm md:text-base text-on-surface-variant">
-          {
-            mobilePayParts.length > 1 ? (
-              <>
-                {mobilePayParts[0]}
-                <strong>{mobilePayNumber}</strong>
-                {mobilePayParts[1]}
-              </>
-            ) : (
-              rawMobilePayInstructions
-            )
-          }
+    <!-- Support Section (Støt Foreningen) -->
+    <section class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 space-y-8" id="bliv-medlem">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-3">
+          STØT RATHLOUSKOLEN
+        </h2>
+        <p class="text-base md:text-lg text-on-surface-variant">
+          Der er flere måder, du kan støtte eleverne og skolen på. Vælg den løsning, der passer dig bedst.
         </p>
-        <a
-          href="https://mobilepay.dk"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="bg-primary text-on-primary text-sm font-semibold px-8 py-3.5 rounded-lg hover:opacity-90 transition-opacity shadow-sm mt-2"
-        >
-          Meld dig ind via MobilePay
-        </a>
+      </div>
+
+      <!-- Support Grid: 1. Membership & 2. Donation -->
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+        <!-- 1. Become Member -->
+        <div class="bg-sky-tint p-6 md:p-8 rounded-2xl border border-primary-fixed-dim flex flex-col justify-between text-center">
+          <div>
+            <div class="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              <span class="material-symbols-outlined text-sm" aria-hidden="true">card_membership</span>
+              Fast Medlemskab
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-primary mb-2">
+              Meld dig ind i dag
+            </h3>
+            <p class="text-base font-medium text-on-surface mb-6">
+              {membershipFee}
+            </p>
+
+            <div class="flex flex-col items-center justify-center gap-4 mb-6">
+              <div class="bg-white p-3 rounded-xl shadow-sm border border-outline-variant/50">
+                <img
+                  class="w-36 h-36 md:w-44 md:h-44 object-cover rounded-lg"
+                  alt="MobilePay QR-kode til medlemskab"
+                  src={mobilePayQr}
+                />
+              </div>
+              <p class="text-xs md:text-sm text-on-surface-variant max-w-xs">
+                {
+                  mobilePayParts.length > 1 ? (
+                    <>
+                      {mobilePayParts[0]}
+                      <strong class="text-on-surface font-semibold">{mobilePayNumber}</strong>
+                      {mobilePayParts[1]}
+                    </>
+                  ) : (
+                    rawMobilePayInstructions
+                  )
+                }
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="https://mobilepay.dk"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-primary text-on-primary text-sm font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity shadow-sm inline-block"
+          >
+            Meld dig ind via MobilePay
+          </a>
+        </div>
+
+        <!-- 2. One-Time Donation / Sponsorship -->
+        <div class="bg-surface-neutral p-6 md:p-8 rounded-2xl border border-surface-variant flex flex-col justify-between text-center">
+          <div>
+            <div class="inline-flex items-center gap-1.5 bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              <span class="material-symbols-outlined text-sm" aria-hidden="true">favorite</span>
+              Engangsbidrag
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-on-surface mb-2">
+              {donationTitle}
+            </h3>
+            <p class="text-sm md:text-base text-on-surface-variant leading-relaxed mb-6">
+              {donationText}
+            </p>
+
+            <div class="bg-white p-6 rounded-xl border border-outline-variant/60 shadow-sm mb-6 text-left space-y-3">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">qr_code_2</span>
+                <div>
+                  <span class="text-xs text-on-surface-variant uppercase font-semibold">MobilePay Boks</span>
+                  <p class="text-base font-bold text-on-surface">{mobilePayNumber}</p>
+                </div>
+              </div>
+              <div class="border-t border-outline-variant/50 pt-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">mail</span>
+                <div>
+                  <span class="text-xs text-on-surface-variant uppercase font-semibold">Sponsorat & Gaver</span>
+                  <p class="text-sm font-medium text-on-surface">{grantEmail}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a
+            href={`mailto:${grantEmail}?subject=Sponsorat / Bidrag til Støtteforeningen`}
+            class="border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm font-semibold px-6 py-3 rounded-xl inline-block shadow-sm"
+          >
+            Kontakt om sponsorat
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. OK Sponsorship Hero / Feature Card -->
+      <div class="bg-linear-to-br from-white to-sky-tint p-6 md:p-10 rounded-2xl border border-primary-fixed-dim shadow-sm grid md:grid-cols-12 gap-6 md:gap-8 items-center">
+        <div class="md:col-span-7 space-y-4">
+          <div class="flex items-center gap-3">
+            {okLogo && (
+              <img
+                src={okLogo}
+                alt="OK Logo"
+                class="h-8 md:h-10 w-auto object-contain shrink-0"
+              />
+            )}
+            <span class="inline-block bg-primary text-on-primary text-xs font-semibold px-3 py-1 rounded-full">
+              Sponsorat
+            </span>
+          </div>
+
+          <h3 class="text-2xl md:text-3xl font-bold text-primary tracking-tight">
+            {okTitle}
+          </h3>
+
+          <p class="text-base font-semibold text-on-surface">
+            {okSubtitle}
+          </p>
+
+          <p class="text-sm md:text-base text-on-surface-variant leading-relaxed whitespace-pre-line">
+            {okInfoText}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <div class="bg-white px-4 py-2 rounded-lg border border-outline-variant font-semibold text-sm text-primary flex items-center gap-2 shadow-xs">
+              <span class="text-xs text-on-surface-variant uppercase font-normal">Sponsornummer:</span>
+              <strong>{okSponsorNumber}</strong>
+            </div>
+
+            <a
+              href={okLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 bg-primary text-on-primary font-semibold text-sm px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity shadow-sm"
+            >
+              <span>Læs mere hos OK</span>
+              <span class="material-symbols-outlined text-base" aria-hidden="true">open_in_new</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 flex justify-center">
+          {okBanner && (
+            <img
+              src={okBanner}
+              alt="Støt Rathlouskolens Støtteforening med OK"
+              class="rounded-xl shadow-md border border-outline-variant/60 w-full max-w-sm md:max-w-none object-contain hover:scale-[1.02] transition-transform duration-300"
+            />
+          )}
+        </div>
       </div>
     </section>
 

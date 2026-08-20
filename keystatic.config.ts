@@ -103,8 +103,52 @@ export default config({
         }),
         membershipFee: fields.text({
           label: 'Årligt Kontingent Tekst',
-          defaultValue: '150 kr. per år for hele husstanden',
+          defaultValue: 'Kun 150 kr. per år for hele husstanden',
         }),
+
+        // One-time donation
+        donationTitle: fields.text({
+          label: 'Engangsbidrag Overskrift',
+          defaultValue: 'Giv et engangsbidrag',
+        }),
+        donationText: fields.text({
+          label: 'Engangsbidrag Tekst',
+          defaultValue: 'Ønsker du eller din virksomhed at støtte med et valgfrit beløb, sponsorat eller gave? Alle bidrag gør en direkte forskel for elever og skole.',
+        }),
+
+        // OK Support
+        okTitle: fields.text({
+          label: 'Støt med OK Overskrift',
+          defaultValue: 'Støt Rathlouskolen med OK',
+        }),
+        okSubtitle: fields.text({
+          label: 'Støt med OK Tekst',
+          defaultValue: 'Støt Rathlouskolens Støtteforening kvit og frit, hver gang du tanker, lader eller vasker hos OK.',
+        }),
+        okInfoText: fields.text({
+          label: 'Støt med OK Detaljeret Beskrivelse',
+          multiline: true,
+          defaultValue: 'Når du tilknytter dit OK Benzinkort eller OK Appen til Rathlouskolens Støtteforening (Sponsornummer: 56 16 02), støtter OK vores forening uden at det koster dig en ekstra øre.',
+        }),
+        okSponsorNumber: fields.text({
+          label: 'OK Sponsornummer',
+          defaultValue: '56 16 02',
+        }),
+        okLink: fields.url({
+          label: 'OK Støt Link',
+          defaultValue: 'https://www.ok.dk/privat/hjaelp/stoet-lokalt/hvordan-stoetter-jeg-lokalt-med-ok',
+        }),
+        okBanner: fields.image({
+          label: 'OK Banner Grafik',
+          directory: 'public/images/support',
+          publicPath: '/images/support',
+        }),
+        okLogo: fields.image({
+          label: 'OK Logo',
+          directory: 'public/images/support',
+          publicPath: '/images/support',
+        }),
+
         grantEmail: fields.text({
           label: 'Ansøgnings / Kontakt Email',
           defaultValue: 'stoetteforeningen@rathlouskolen.com',
