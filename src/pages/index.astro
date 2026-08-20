@@ -54,6 +54,10 @@ const termsHref = (settings?.termsFile && settings.termsFile.trim())
     : '#';
 
 const hasGallery = galleryImages.length > 0;
+
+// MobilePay Instructions formatting: replaces @mobilepay placeholder or defaults cleanly
+const rawMobilePayInstructions = settings?.mobilePayInstructions || 'Scan QR-koden med MobilePay eller overfør til boks @mobilepay';
+const mobilePayParts = rawMobilePayInstructions.split('@mobilepay');
 ---
 
 <Layout title={heroTitle} description={heroSubtitle}>
@@ -120,7 +124,17 @@ Foreningens indtægter opstår ved forskellige arrangementer afholdt af Støttef
           />
         </div>
         <p class="text-sm md:text-base text-on-surface-variant">
-          Scan QR-koden med MobilePay eller overfør til boks <strong>{mobilePayNumber}</strong>
+          {
+            mobilePayParts.length > 1 ? (
+              <>
+                {mobilePayParts[0]}
+                <strong>{mobilePayNumber}</strong>
+                {mobilePayParts[1]}
+              </>
+            ) : (
+              rawMobilePayInstructions
+            )
+          }
         </p>
         <a
           href="https://mobilepay.dk"

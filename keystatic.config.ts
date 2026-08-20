@@ -63,6 +63,11 @@ export default config({
           label: 'MobilePay Nummer / Boks',
           defaultValue: '86561844',
         }),
+        mobilePayInstructions: fields.text({
+          label: 'MobilePay Instruktionstekst',
+          description: 'Brug @mobilepay som pladsholder for nummeret/boksen (f.eks. "Scan QR-koden med MobilePay eller overfør til boks @mobilepay")',
+          defaultValue: 'Scan QR-koden med MobilePay eller overfør til boks @mobilepay',
+        }),
         mobilePayQr: fields.image({
           label: 'MobilePay QR Billede',
           directory: 'public/images/uploads',

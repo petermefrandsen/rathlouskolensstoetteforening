@@ -25,6 +25,7 @@ quotes:
       ansøgninger og hvad der søges til.
     author: '- Skoleleder Dorte Halberg'
 mobilePayNumber: '86561844'
+mobilePayInstructions: 'Scan QR-koden med MobilePay eller overfør til boks @mobilepay'
 membershipFee: 150 kr. per medlem
 grantEmail: stoetteforeningen@rathlouskolen.com
 cvr: '44343630'
