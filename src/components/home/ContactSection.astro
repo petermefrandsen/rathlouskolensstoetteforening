@@ -1,0 +1,95 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+  contactPerson?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  cvr?: string;
+}
+
+const {
+  title = 'KONTAKT OS',
+  subtitle = 'Har du spørgsmål til støtteforeningen, arrangementer eller indmeldelse? Skriv eller ring endelig til os.',
+  contactPerson,
+  email = 'stoetteforeningen@rathlouskolen.com',
+  phone = '86561844',
+  address = 'Rosensgade 83, 8300 Odder',
+  cvr = '86561844',
+} = Astro.props;
+---
+
+<section
+  class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 bg-sky-tint p-6 md:p-10 rounded-xl border border-primary-fixed-dim"
+  id="kontakt"
+>
+  <div class="max-w-3xl mx-auto text-center mb-8">
+    <h2 class="text-2xl md:text-3xl font-semibold text-primary mb-3">
+      {title}
+    </h2>
+    <p class="text-base md:text-lg text-on-surface-variant">
+      {subtitle}
+    </p>
+    {
+      contactPerson && (
+        <p class="text-sm font-semibold text-primary mt-2">
+          {contactPerson}
+        </p>
+      )
+    }
+  </div>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+    <!-- Email Card -->
+    <a
+      href={`mailto:${email}`}
+      class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm hover:border-primary hover:shadow-md transition-all duration-200 flex items-start gap-4"
+    >
+      <div class="p-2.5 rounded-lg bg-sky-tint text-primary shrink-0">
+        <span class="material-symbols-outlined text-2xl" aria-hidden="true">mail</span>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+          E-mail
+        </p>
+        <p class="text-sm font-medium text-on-surface truncate">
+          {email}
+        </p>
+      </div>
+    </a>
+
+    <!-- Phone Card -->
+    <a
+      href={`tel:${phone}`}
+      class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm hover:border-primary hover:shadow-md transition-all duration-200 flex items-start gap-4"
+    >
+      <div class="p-2.5 rounded-lg bg-sky-tint text-primary shrink-0">
+        <span class="material-symbols-outlined text-2xl" aria-hidden="true">call</span>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+          Telefon
+        </p>
+        <p class="text-sm font-medium text-on-surface truncate">
+          {phone}
+        </p>
+      </div>
+    </a>
+
+    <!-- Address Card -->
+    <div class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm flex items-start gap-4 sm:col-span-2 lg:col-span-1">
+      <div class="p-2.5 rounded-lg bg-sky-tint text-primary shrink-0">
+        <span class="material-symbols-outlined text-2xl" aria-hidden="true">location_on</span>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+          Adresse (CVR: {cvr})
+        </p>
+        <p class="text-sm font-medium text-on-surface truncate">
+          {address}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,137 @@
+---
+interface Props {
+  logoUrl?: string;
+  hasGallery?: boolean;
+}
+
+const {
+  logoUrl = 'https://lh3.googleusercontent.com/aida/AP1WRLv-auhEXEYBuE8g7TwTMU2UFfhUG9gA1b8D_iNIvjS5NLvMO3AKxSYhxJL-BYQlnUfOlEVdJODwsztw4d_poqtcwcMH_8OOs-mMu61Iu64JCECiqVJHBOha78TPB23_F9k46jYIbNMHmgMLQztOlefqZtujkE2fXKG1eA8w-yVkhwyDJpcp_7Uts5XuGj7mocZPvFZUO--iLyJnPCg4i3BXzW3zQiMhzrocgDs2lmmOH_8P9YQru2uuSw',
+  hasGallery = false,
+} = Astro.props;
+
+const allNavItems = [
+  { label: 'Om os', href: '#om-os' },
+  { label: 'Støt', href: '#bliv-medlem' },
+  { label: 'Ansøgninger', href: '#ansogninger' },
+  { label: 'Galleri', href: '#galleri', show: hasGallery },
+  { label: 'Kontakt', href: '#kontakt' },
+];
+
+const navItems = allNavItems.filter((item) => item.show !== false);
+---
+
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/95 backdrop-blur-sm border-b border-outline-variant">
+  <div class="max-w-container-max mx-auto flex justify-between items-center px-4 md:px-8 h-20">
+    <a href="/" class="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0 mr-2">
+      <img
+        alt="Rathlouskolens Støtteforening Logo"
+        class="h-10 sm:h-12 md:h-12 w-auto object-contain shrink-0"
+        src={logoUrl}
+      />
+      <!-- Mobile / Small screen title text -->
+      <span class="md:hidden font-bold text-[15px] sm:text-lg leading-snug tracking-tight text-on-surface line-clamp-2">
+        Rathlouskolens Støtteforening
+      </span>
+    </a>
+
+    <!-- Desktop Navigation (Including Kontakt) -->
+    <nav class="hidden md:flex items-center gap-6 lg:gap-8" id="desktop-nav">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            data-nav-link={item.href}
+            class="nav-link text-sm font-semibold tracking-wide transition-all duration-200 text-on-surface-variant hover:text-primary pb-1 border-b-2 border-transparent"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Desktop Primary CTA Button -->
+    <div class="hidden md:flex items-center pl-4">
+      <a
+        href="#bliv-medlem"
+        class="bg-primary text-on-primary text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity shadow-sm"
+      >
+        Meld dig ind
+      </a>
+    </div>
+
+    <!-- Mobile Action Button -->
+    <div class="flex md:hidden items-center">
+      <a
+        href="#bliv-medlem"
+        class="bg-primary text-on-primary text-xs font-semibold px-3 py-2 rounded-lg shrink-0"
+      >
+        Meld dig ind
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  function setupScrollSpy() {
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
+    if (!navLinks.length) return;
+
+    const sections: HTMLElement[] = [];
+    navLinks.forEach((link) => {
+      const hash = link.getAttribute('href');
+      if (hash && hash.startsWith('#')) {
+        const target = document.querySelector<HTMLElement>(hash);
+        if (target) {
+          sections.push(target);
+        }
+      }
+    });
+
+    function setActiveLink(activeId: string | null) {
+      navLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        const isActive = href === `#${activeId}`;
+        if (isActive) {
+          link.classList.add('text-primary', 'border-primary');
+          link.classList.remove('text-on-surface-variant', 'border-transparent');
+        } else {
+          link.classList.remove('text-primary', 'border-primary');
+          link.classList.add('text-on-surface-variant', 'border-transparent');
+        }
+      });
+    }
+
+    // Scroll listener for robust active anchor detection
+    function onScroll() {
+      const scrollPosition = window.scrollY + 140; // Header height + offset
+      let currentSectionId: string | null = null;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section.offsetTop <= scrollPosition) {
+          currentSectionId = section.id;
+          break;
+        }
+      }
+
+      // If at the very top, highlight the first section (Om os)
+      if (!currentSectionId && window.scrollY < 200 && sections.length > 0) {
+        currentSectionId = sections[0].id;
+      }
+
+      setActiveLink(currentSectionId);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Also listen to hashchange for manual clicks
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) setActiveLink(hash);
+    });
+
+    onScroll();
+  }
+
+  setupScrollSpy();
+  document.addEventListener('astro:page-load', setupScrollSpy);
+</script>

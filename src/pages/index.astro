@@ -1,0 +1,191 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/common/Header.astro';
+import Footer from '../components/common/Footer.astro';
+import QuoteCarousel from '../components/home/QuoteCarousel.astro';
+import GallerySection from '../components/home/GallerySection.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+
+// Initialize Keystatic reader for data fetching
+const reader = createReader(process.cwd(), keystaticConfig);
+const settings = await reader.singletons.settings.read();
+
+// Quotes from CMS (array up to 5 items)
+const quotes = (settings?.quotes || []) as { quote: string; author: string }[];
+
+// Gallery Images from CMS
+const galleryImages = (settings?.galleryImages || []) as {
+  image: string;
+  caption?: string;
+  tag?: string;
+}[];
+
+// Fallbacks if not yet edited in Keystatic CMS
+const heroTitle = settings?.heroTitle || 'Rathlouskolens Støtteforening';
+const heroSubtitle = settings?.heroSubtitle || 'Støtter op om skolen for elever og personale';
+const heroImage = settings?.heroImage || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDRVstlz48ngbeYLuSEsBgDQdtNror6Ai-PhUh2Lp8s4cQkdbCIXQVK_Gxtm7qWixciq-7acAyVz7KPGkjaO7m166qLhMMtTNQcCKkqR9ffg2wD9FLchjw8CZBHGq7o2eqqN2Z1WVBOtkwRHeyIBkOHw5nBPd34jFZ2GWkydwpoLuvYptDFsBvkux5MH6pcgj8l0epIFkDp-b52BQ3uFg6l_TMu8RFlRYYE8twkzK7uONBN0z3b7RgFbobnX3qJfa_khg';
+const mobilePayNumber = settings?.mobilePayNumber || '86561844';
+const mobilePayQr = settings?.mobilePayQr || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQI86rJpubHtLBfzayBgHWKSA7LoQE5Mw8kb2arKLr0seiopfGT6eY-vvAWjMVTKmiBcxSoroeFIGWKYY_PxD6zLnCBL2pawvCZiasEGu0G0bukFqvV2xaP0cjl_R8H7Dbb4ltwSkRFzbHtIdYQycDDV0zmgmlXDLE5asPMCV7cL7RnlddirL6CraeHTTlE9iNM6Ykko_pJtDvhMoD2ZGl3am-WZCaUDh8TWPPxJ7k0F3xS0UFqvmE';
+const membershipFee = settings?.membershipFee || 'Kun 150 kroner per år for hele husstanden';
+const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com';
+const cvr = settings?.cvr || '86561844';
+const address = settings?.address || 'Rosensgade 83, 8300 Odder';
+const phone = settings?.phone || '86561844';
+const logoUrl = 'https://lh3.googleusercontent.com/aida/AP1WRLv-auhEXEYBuE8g7TwTMU2UFfhUG9gA1b8D_iNIvjS5NLvMO3AKxSYhxJL-BYQlnUfOlEVdJODwsztw4d_poqtcwcMH_8OOs-mMu61Iu64JCECiqVJHBOha78TPB23_F9k46jYIbNMHmgMLQztOlefqZtujkE2fXKG1eA8w-yVkhwyDJpcp_7Uts5XuGj7mocZPvFZUO--iLyJnPCg4i3BXzW3zQiMhzrocgDs2lmmOH_8P9YQru2uuSw';
+// Document links: Uploaded file takes precedence over URL. If file is removed, falls back to URL or '#'
+const bylawsHref = (settings?.bylawsFile && settings.bylawsFile.trim()) 
+  ? settings.bylawsFile 
+  : (settings?.bylawsUrl && settings.bylawsUrl.trim()) 
+    ? settings.bylawsUrl 
+    : '#';
+
+const privacyHref = (settings?.privacyFile && settings.privacyFile.trim()) 
+  ? settings.privacyFile 
+  : (settings?.privacyUrl && settings.privacyUrl.trim()) 
+    ? settings.privacyUrl 
+    : '#';
+
+const termsHref = (settings?.termsFile && settings.termsFile.trim()) 
+  ? settings.termsFile 
+  : (settings?.termsUrl && settings.termsUrl.trim()) 
+    ? settings.termsUrl 
+    : '#';
+
+const hasGallery = galleryImages.length > 0;
+---
+
+<Layout title={heroTitle} description={heroSubtitle}>
+  <Header logoUrl={logoUrl} hasGallery={hasGallery} />
+
+  <main class="max-w-container-max mx-auto px-4 md:px-6 pb-20">
+    <!-- Hero Section -->
+    <section class="mt-8 md:mt-12 relative rounded-xl overflow-hidden min-h-[360px] md:min-h-[420px] flex items-center justify-center p-6 md:p-12 bg-sky-tint">
+      <div
+        class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={`background-image: url('${heroImage}');`}
+      ></div>
+      <div class="relative z-10 text-center max-w-2xl flex flex-col items-center">
+        <img
+          alt="Logo"
+          class="h-20 md:h-28 w-auto mx-auto mb-4 object-contain"
+          src={logoUrl}
+          style="filter: brightness(0) invert(1);"
+        />
+        <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-3 text-white">
+          {heroTitle}
+        </h1>
+        <p class="text-lg md:text-2xl font-semibold text-white/95">
+          {heroSubtitle}
+        </p>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 grid md:grid-cols-2 gap-6 md:gap-8 items-start" id="om-os">
+      <div class="space-y-4">
+        <h2 class="text-xl md:text-2xl font-semibold text-primary tracking-wide">
+          {settings?.introTitle || 'OM STØTTEFORENINGEN'}
+        </h2>
+        <div class="space-y-3 text-base text-on-surface-variant leading-relaxed whitespace-pre-line">
+          {settings?.introText || `Rathlouskolens støtteforening er en frivillig forening, som alle kan være medlem af.
+
+Foreningen har til formål at støtte op om Rathlouskolen og samle midler ind, som kan være til glæde for elever og personale på skolen.
+
+Alle skolens brugere kan søge om midler fra støtteforeningen.
+
+Foreningens indtægter opstår ved forskellige arrangementer afholdt af Støtteforeningen. Desuden betales et kontingent fra medlemmerne på årligt 150 kr. Støtteforeningen tager også gerne imod sponsorater og gaver.`}
+        </div>
+      </div>
+
+      <QuoteCarousel quotes={quotes} />
+    </section>
+
+    <!-- Membership CTA -->
+    <section class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 bg-sky-tint p-6 md:p-16 rounded-xl border border-primary-fixed-dim text-center" id="bliv-medlem">
+      <h2 class="text-2xl md:text-3xl font-semibold text-primary mb-2">
+        Meld dig ind i dag
+      </h2>
+      <p class="text-base md:text-lg text-on-surface-variant mb-6">
+        {membershipFee}
+      </p>
+
+      <div class="flex flex-col items-center justify-center gap-4">
+        <div class="bg-white p-3 rounded-lg shadow-sm">
+          <img
+            class="w-40 h-40 md:w-48 md:h-48 object-cover rounded"
+            alt="MobilePay QR-kode til medlemskab"
+            src={mobilePayQr}
+          />
+        </div>
+        <p class="text-sm md:text-base text-on-surface-variant">
+          Scan QR-koden med MobilePay eller overfør til boks <strong>{mobilePayNumber}</strong>
+        </p>
+        <a
+          href="https://mobilepay.dk"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-primary text-on-primary text-sm font-semibold px-8 py-3.5 rounded-lg hover:opacity-90 transition-opacity shadow-sm mt-2"
+        >
+          Meld dig ind via MobilePay
+        </a>
+      </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 bg-surface-neutral p-6 md:p-8 rounded-xl border border-surface-variant" id="ansogninger">
+      <h2 class="text-xl md:text-2xl font-semibold text-primary mb-4">
+        ANSØGNINGER
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6 items-center">
+        <div class="space-y-3 text-base text-on-surface-variant leading-relaxed">
+          <p>
+            Du ansøger støtteforeningen om midler ved at sende en ansøgning til støtteforeningens mail:{' '}
+            <strong class="text-on-surface">{grantEmail}</strong>.
+          </p>
+          <p>
+            Husk at beskrive, hvad det er du/I søger pengene til, hvornår pengene skal bruges og hvad I håber på at få ud af at modtage penge. Ansøgningerne markeres med tydelige afsendere.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-outline-variant flex items-start gap-4">
+          <span class="material-symbols-outlined text-primary text-3xl shrink-0" aria-hidden="true">
+            calendar_month
+          </span>
+          <p class="text-sm md:text-base text-on-surface-variant">
+            Støtteforeningen modtager løbende ansøgningerne, og de uddeles på <strong class="text-on-surface">Mod-til-at-glæde-dagen</strong> - fredag før påske.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <GallerySection
+      title={settings?.galleryTitle}
+      subtitle={settings?.gallerySubtitle}
+      images={galleryImages}
+    />
+
+    <!-- Contact Section -->
+    <ContactSection
+      title={settings?.contactTitle}
+      subtitle={settings?.contactSubtitle}
+      contactPerson={settings?.contactPerson}
+      email={grantEmail}
+      phone={phone}
+      address={address}
+      cvr={cvr}
+    />
+  </main>
+
+  <Footer
+    address={address}
+    phone={phone}
+    email={grantEmail}
+    cvr={cvr}
+    bylawsHref={bylawsHref}
+    privacyHref={privacyHref}
+    termsHref={termsHref}
+  />
+</Layout>

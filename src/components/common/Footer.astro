@@ -1,0 +1,77 @@
+---
+interface Props {
+  address?: string;
+  phone?: string;
+  email?: string;
+  cvr?: string;
+  bylawsHref?: string;
+  privacyHref?: string;
+  termsHref?: string;
+}
+
+const {
+  address = 'Rosensgade 83, 8300 Odder',
+  phone = '86561844',
+  email = 'stoetteforeningen@rathlouskolen.com',
+  cvr = '86561844',
+  bylawsHref = '#',
+  privacyHref = '#',
+  termsHref = '#',
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer id="kontakt" class="w-full py-12 px-4 md:px-8 border-t border-outline-variant bg-inverse-surface text-inverse-on-surface scroll-mt-24 md:scroll-mt-28">
+  <div class="max-w-container-max mx-auto grid md:grid-cols-2 gap-8">
+    <div>
+      <h3 class="text-xl md:text-2xl font-semibold text-inverse-on-surface mb-3">
+        Rathlouskolens Støtteforening
+      </h3>
+      <div class="text-sm md:text-base space-y-1.5 text-inverse-on-surface/80">
+        <p>{address}</p>
+        <p>tlf.: {phone}</p>
+        <p>
+          mail:{' '}
+          <a href={`mailto:${email}`} class="hover:underline text-primary-fixed-dim">
+            {email}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:items-end space-y-2 text-sm md:text-base">
+      <a
+        href={termsHref}
+        target={termsHref.startsWith('http') || termsHref.endsWith('.pdf') ? '_blank' : '_self'}
+        rel={termsHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+        class="hover:text-primary-fixed-dim transition-colors"
+      >
+        Handelsbetingelser
+      </a>
+      <a
+        href={bylawsHref}
+        target={bylawsHref.startsWith('http') || bylawsHref.endsWith('.pdf') ? '_blank' : '_self'}
+        rel={bylawsHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+        class="hover:text-primary-fixed-dim transition-colors"
+      >
+        Vedtægter
+      </a>
+      <a
+        href={privacyHref}
+        target={privacyHref.startsWith('http') || privacyHref.endsWith('.pdf') ? '_blank' : '_self'}
+        rel={privacyHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+        class="hover:text-primary-fixed-dim transition-colors"
+      >
+        Privatlivspolitik
+      </a>
+      <a href={`mailto:${email}`} class="hover:text-primary-fixed-dim transition-colors">
+        Kontakt
+      </a>
+    </div>
+  </div>
+
+  <div class="max-w-container-max mx-auto mt-10 pt-4 border-t border-outline text-xs text-inverse-on-surface/60 text-center">
+    © {currentYear} Rathlouskolens Støtteforening - CVR: {cvr}
+  </div>
+</footer>

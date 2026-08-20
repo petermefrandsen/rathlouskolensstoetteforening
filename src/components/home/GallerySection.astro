@@ -1,0 +1,309 @@
+---
+interface GalleryItem {
+  image: string;
+  caption?: string;
+  tag?: string;
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  images?: GalleryItem[];
+}
+
+const {
+  title = 'GALLERI',
+  subtitle = 'Billeder og glimt fra støtteforeningens aktiviteter og arrangementer.',
+  images = [],
+} = Astro.props;
+
+// Number of items per page
+const PAGE_SIZE = 6;
+const totalImages = images.length;
+const totalPages = Math.ceil(totalImages / PAGE_SIZE);
+---
+
+{
+  totalImages > 0 && (
+    <section
+      class="mt-16 md:mt-20 scroll-mt-24 md:scroll-mt-28 bg-surface-neutral p-6 md:p-8 rounded-xl border border-surface-variant"
+      id="galleri"
+      data-total-pages={totalPages}
+      data-page-size={PAGE_SIZE}
+    >
+      <div class="mb-6 md:mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 class="text-xl md:text-2xl font-semibold text-primary mb-1">{title}</h2>
+          <p class="text-base text-on-surface-variant">{subtitle}</p>
+        </div>
+
+        {totalPages > 1 && (
+          <div class="flex items-center gap-2 self-start md:self-auto">
+            <span class="text-xs font-semibold text-on-surface-variant" id="gallery-page-indicator">
+              Side 1 af {totalPages}
+            </span>
+            <div class="flex gap-1">
+              <button
+                id="gallery-prev-page"
+                class="p-1.5 rounded-lg border border-outline-variant bg-white text-on-surface-variant hover:text-primary hover:border-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                aria-label="Forrige side"
+                disabled
+              >
+                <span class="material-symbols-outlined text-lg" aria-hidden="true">
+                  chevron_left
+                </span>
+              </button>
+              <button
+                id="gallery-next-page"
+                class="p-1.5 rounded-lg border border-outline-variant bg-white text-on-surface-variant hover:text-primary hover:border-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                aria-label="Næste side"
+              >
+                <span class="material-symbols-outlined text-lg" aria-hidden="true">
+                  chevron_right
+                </span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Image Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="gallery-grid">
+        {images.map((item, index) => {
+          const pageIndex = Math.floor(index / PAGE_SIZE);
+          return (
+            <div
+              class:list={[
+                'gallery-card group relative bg-white rounded-xl border border-outline-variant/60 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer',
+                pageIndex === 0 ? '' : 'hidden',
+              ]}
+              data-page={pageIndex}
+              data-index={index}
+              data-image={item.image}
+              data-caption={item.caption || ''}
+              data-tag={item.tag || ''}
+            >
+              <div class="aspect-4/3 w-full overflow-hidden bg-sky-tint relative">
+                <img
+                  src={item.image}
+                  alt={item.caption || 'Galleri billede'}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <!-- Hover magnifying overlay -->
+                <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-3xl drop-shadow">
+                    fullscreen
+                  </span>
+                </div>
+              </div>
+
+              {(item.caption || item.tag) && (
+                <div class="p-4">
+                  {item.tag && (
+                    <span class="inline-block bg-sky-tint text-primary text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">
+                      {item.tag}
+                    </span>
+                  )}
+                  {item.caption && (
+                    <p class="text-sm font-medium text-on-surface line-clamp-2">{item.caption}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Fullscreen Lightbox Modal -->
+      <div
+        id="gallery-modal"
+        class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 md:p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Billede visning"
+      >
+        <!-- Close Button -->
+        <button
+          id="modal-close"
+          class="absolute top-4 right-4 md:top-6 md:right-6 text-white/80 hover:text-white bg-black/40 hover:bg-black/70 p-2.5 rounded-full transition-colors z-20"
+          aria-label="Luk fuldskærm"
+        >
+          <span class="material-symbols-outlined text-2xl md:text-3xl" aria-hidden="true">
+            close
+          </span>
+        </button>
+
+        <!-- Previous Image -->
+        <button
+          id="modal-prev"
+          class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-black/40 hover:bg-black/70 p-2.5 md:p-3 rounded-full transition-colors z-20"
+          aria-label="Forrige billede"
+        >
+          <span class="material-symbols-outlined text-2xl md:text-3xl" aria-hidden="true">
+            chevron_left
+          </span>
+        </button>
+
+        <!-- Next Image -->
+        <button
+          id="modal-next"
+          class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-black/40 hover:bg-black/70 p-2.5 md:p-3 rounded-full transition-colors z-20"
+          aria-label="Næste billede"
+        >
+          <span class="material-symbols-outlined text-2xl md:text-3xl" aria-hidden="true">
+            chevron_right
+          </span>
+        </button>
+
+        <!-- Modal Content -->
+        <div class="relative max-w-5xl max-h-[85vh] flex flex-col items-center select-none">
+          <img
+            id="modal-image"
+            src=""
+            alt=""
+            class="max-w-full max-h-[72vh] object-contain rounded-lg shadow-2xl transition-opacity duration-200"
+          />
+          <div class="mt-4 text-center text-white max-w-2xl px-4">
+            <span
+              id="modal-tag"
+              class="inline-block bg-primary text-on-primary text-xs font-semibold px-2.5 py-0.5 rounded-full mb-1.5 empty:hidden"
+            ></span>
+            <p id="modal-caption" class="text-sm md:text-base font-medium text-white/90 empty:hidden"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  function setupGallery() {
+    const gallery = document.getElementById('galleri');
+    if (!gallery) return;
+
+    const cards = Array.from(gallery.querySelectorAll<HTMLElement>('.gallery-card'));
+    if (!cards.length) return;
+
+    const totalPages = parseInt(gallery.dataset.totalPages || '1', 10);
+    let currentPage = 0;
+
+    const prevPageBtn = document.getElementById('gallery-prev-page') as HTMLButtonElement | null;
+    const nextPageBtn = document.getElementById('gallery-next-page') as HTMLButtonElement | null;
+    const pageIndicator = document.getElementById('gallery-page-indicator');
+
+    function updatePagination() {
+      cards.forEach((card) => {
+        const cardPage = parseInt(card.dataset.page || '0', 10);
+        if (cardPage === currentPage) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (pageIndicator) {
+        pageIndicator.textContent = `Side ${currentPage + 1} af ${totalPages}`;
+      }
+
+      if (prevPageBtn) prevPageBtn.disabled = currentPage === 0;
+      if (nextPageBtn) nextPageBtn.disabled = currentPage >= totalPages - 1;
+    }
+
+    prevPageBtn?.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        updatePagination();
+      }
+    });
+
+    nextPageBtn?.addEventListener('click', () => {
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        updatePagination();
+      }
+    });
+
+    // Lightbox modal logic
+    const modal = document.getElementById('gallery-modal');
+    const modalImg = document.getElementById('modal-image') as HTMLImageElement | null;
+    const modalTag = document.getElementById('modal-tag');
+    const modalCaption = document.getElementById('modal-caption');
+    const modalClose = document.getElementById('modal-close');
+    const modalPrev = document.getElementById('modal-prev');
+    const modalNext = document.getElementById('modal-next');
+
+    let currentModalIndex = 0;
+
+    function openModal(index: number) {
+      if (!modal || !modalImg) return;
+      currentModalIndex = index;
+      const card = cards[index];
+      if (!card) return;
+
+      const src = card.dataset.image || '';
+      const caption = card.dataset.caption || '';
+      const tag = card.dataset.tag || '';
+
+      modalImg.src = src;
+      modalImg.alt = caption;
+
+      if (modalTag) {
+        modalTag.textContent = tag;
+        modalTag.style.display = tag ? 'inline-block' : 'none';
+      }
+
+      if (modalCaption) {
+        modalCaption.textContent = caption;
+        modalCaption.style.display = caption ? 'block' : 'none';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function showPrevImage() {
+      if (cards.length === 0) return;
+      const newIndex = (currentModalIndex - 1 + cards.length) % cards.length;
+      openModal(newIndex);
+    }
+
+    function showNextImage() {
+      if (cards.length === 0) return;
+      const newIndex = (currentModalIndex + 1) % cards.length;
+      openModal(newIndex);
+    }
+
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => openModal(idx));
+    });
+
+    modalClose?.addEventListener('click', closeModal);
+    modalPrev?.addEventListener('click', showPrevImage);
+    modalNext?.addEventListener('click', showNextImage);
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (!modal || modal.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') showPrevImage();
+      if (e.key === 'ArrowRight') showNextImage();
+    });
+  }
+
+  setupGallery();
+  document.addEventListener('astro:page-load', setupGallery);
+</script>

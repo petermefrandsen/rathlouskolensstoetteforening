@@ -1,0 +1,28 @@
+# Build outputs
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Cloudflare Pages / Wrangler cache
+.wrangler/
+.mf/
+
+# Environment variables & secrets
+.env
+.env.production
+.env.local
+*.env.*.local
+
+# Keystatic local cache
+.keystatic/
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/

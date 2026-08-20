@@ -1,0 +1,192 @@
+---
+interface QuoteItem {
+  quote: string;
+  author: string;
+}
+
+interface Props {
+  quotes?: QuoteItem[];
+}
+
+const { quotes = [] } = Astro.props;
+
+// Default fallback if no quotes entered in CMS yet
+const defaultQuotes: QuoteItem[] = [
+  {
+    quote:
+      'Det har en utrolig stor værdi for Rathlouskolen, at vi har en støtteforening. Støtteforeningen gør ting mulige for vores elever og personale. At opleve processen, hvor klasserne arbejder med ansøgningerne til støtteforeningen og opleve deres glæde, når de er så heldige at få tildelt penge, så deres ønske kan gå i opfyldelse, er en fantastisk proces. Udover glæden og sammenholdet det giver i en klasse, er det også en meget lærerigt for klasserne og mange er utrolige kreative med både ansøgninger og hvad der søges til.',
+    author: '- Skoleleder Dorte Halberg',
+  },
+];
+
+const displayQuotes = quotes.length > 0 ? quotes : defaultQuotes;
+const isCarousel = displayQuotes.length > 1;
+---
+
+<div
+  class="bg-surface-neutral p-6 md:p-8 rounded-xl border border-surface-variant relative overflow-hidden flex flex-col justify-between"
+  id="quote-carousel"
+  data-carousel={isCarousel ? 'true' : 'false'}
+  data-total={displayQuotes.length}
+>
+  <div>
+    <span
+      class="material-symbols-outlined text-primary text-4xl mb-3 block select-none"
+      aria-hidden="true"
+    >
+      format_quote
+    </span>
+
+    <div class="relative min-h-[160px] md:min-h-[180px]">
+      {
+        displayQuotes.map((item, index) => (
+          <div
+            class:list={[
+              'quote-slide transition-all duration-700 ease-in-out',
+              index === 0
+                ? 'opacity-100 relative translate-x-0'
+                : 'opacity-0 absolute inset-0 pointer-events-none translate-x-4',
+            ]}
+            data-index={index}
+          >
+            <blockquote class="text-base md:text-lg italic text-on-surface-variant mb-4 leading-relaxed">
+              "{item.quote}"
+            </blockquote>
+            <p class="text-sm font-semibold tracking-wider text-primary">
+              {item.author}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  {
+    isCarousel && (
+      <div class="flex items-center justify-between pt-4 mt-4 border-t border-outline-variant/50">
+        <!-- Dots indicators -->
+        <div class="flex gap-2">
+          {displayQuotes.map((_, index) => (
+            <button
+              class:list={[
+                'quote-dot w-2.5 h-2.5 rounded-full transition-all duration-300',
+                index === 0 ? 'bg-primary w-6' : 'bg-outline-variant hover:bg-outline',
+              ]}
+              data-target-index={index}
+              aria-label={`Gå til citat ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        <!-- Manual Navigation Controls -->
+        <div class="flex gap-1">
+          <button
+            id="quote-prev"
+            class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
+            aria-label="Forrige citat"
+          >
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">
+              chevron_left
+            </span>
+          </button>
+          <button
+            id="quote-next"
+            class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
+            aria-label="Næste citat"
+          >
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">
+              chevron_right
+            </span>
+          </button>
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  function setupQuoteCarousel() {
+    const container = document.getElementById('quote-carousel');
+    if (!container || container.dataset.carousel !== 'true') return;
+
+    const total = parseInt(container.dataset.total || '1', 10);
+    const slides = container.querySelectorAll<HTMLElement>('.quote-slide');
+    const dots = container.querySelectorAll<HTMLElement>('.quote-dot');
+    const prevBtn = document.getElementById('quote-prev');
+    const nextBtn = document.getElementById('quote-next');
+
+    let currentIndex = 0;
+    let autoInterval: ReturnType<typeof setInterval> | null = null;
+
+    function goToSlide(newIndex: number) {
+      if (newIndex < 0) {
+        newIndex = total - 1;
+      } else if (newIndex >= total) {
+        newIndex = 0;
+      }
+
+      slides.forEach((slide, idx) => {
+        if (idx === newIndex) {
+          slide.classList.remove('opacity-0', 'absolute', 'pointer-events-none', 'translate-x-4');
+          slide.classList.add('opacity-100', 'relative', 'translate-x-0');
+        } else {
+          slide.classList.add('opacity-0', 'absolute', 'pointer-events-none', 'translate-x-4');
+          slide.classList.remove('opacity-100', 'relative', 'translate-x-0');
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === newIndex) {
+          dot.classList.add('bg-primary', 'w-6');
+          dot.classList.remove('bg-outline-variant');
+        } else {
+          dot.classList.remove('bg-primary', 'w-6');
+          dot.classList.add('bg-outline-variant');
+        }
+      });
+
+      currentIndex = newIndex;
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      autoInterval = setInterval(() => {
+        goToSlide(currentIndex + 1);
+      }, 6000);
+    }
+
+    function stopAutoPlay() {
+      if (autoInterval) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+      }
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+      startAutoPlay();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+      startAutoPlay();
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const target = parseInt(dot.dataset.targetIndex || '0', 10);
+        goToSlide(target);
+        startAutoPlay();
+      });
+    });
+
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+
+    startAutoPlay();
+  }
+
+  // Run on initial load and View Transitions
+  setupQuoteCarousel();
+  document.addEventListener('astro:page-load', setupQuoteCarousel);
+</script>
