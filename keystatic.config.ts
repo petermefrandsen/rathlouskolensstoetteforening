@@ -3,15 +3,14 @@ import { config, singleton, fields } from '@keystatic/core';
 export default config({
   storage: process.env.NODE_ENV === 'production'
     ? {
-        kind: 'github',
-        repo: {
-          owner: 'PretiumBusiness',
-          name: 'rathlouskolensstoetteforening',
-        },
+        kind: 'cloud',
       }
     : {
         kind: 'local',
       },
+  cloud: {
+    project: 'rath-stoetteforening/rathloustotte-site',
+  },
   singletons: {
     settings: singleton({
       label: 'Generelle Foreningsoplysninger',
