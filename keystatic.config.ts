@@ -11,7 +11,36 @@ export default config({
   cloud: {
     project: 'rath-stoetteforening/rathloustotte-site',
   },
+  ui: {
+    brand: {
+      name: 'Rathlouskolens Støtteforening CMS',
+    },
+  },
   singletons: {
+    guide: singleton({
+      label: '📖 Vejledning & Adgangsguide (Læs her)',
+      path: 'src/content/guide/index',
+      schema: {
+        forEditors: fields.text({
+          label: 'For Redaktører & Bestyrelsesmedlemmer (Sådan logger du ind)',
+          multiline: true,
+          defaultValue:
+            '1. Opret en gratis konto på https://github.com/join med din egen e-mailadresse.\n2. Send dit GitHub-brugernavn til webansvarlig (eller formand for støtteforeningen).\n3. Webansvarlig inviterer dig som "Collaborator" til projektet.\n4. Acceptér invitationen i din mail.\n5. Log ind her på /keystatic med din GitHub-konto.\n6. Alle ændringer du gemmer bliver automatisk opdateret på hjemmesiden efter ca. 1 minut!',
+        }),
+        forDevelopers: fields.text({
+          label: 'For Udviklere / Webansvarlige (Sådan giver du andre adgang)',
+          multiline: true,
+          defaultValue:
+            '1. Gå til GitHub: https://github.com/PretiumBusiness/rathlouskolensstoetteforening/settings/access\n2. Klik på "Add people" og søg efter brugerens GitHub-brugernavn eller e-mail.\n3. Vælg rollen "Write" (giver adgang til at redigere indhold via Keystatic CMS).\n4. Brugeren modtager en invitationsmail og kan herefter logge ind direkte på https://www.rathlouskolensstøtteforening.dk/keystatic.',
+        }),
+        tipsAndTricks: fields.text({
+          label: 'Gode råd til indhold',
+          multiline: true,
+          defaultValue:
+            '• MobilePay: Du kan bruge @mobilepay i instruktionsteksten, så indsættes nummeret automatisk med fed skrift.\n• Dokumenter: Uploader du en PDF-fil overskriver den automatisk et indsat link. Sletter du PDF-filen falder den tilbage på linket.\n• Galleri: Galleriet og menupunktet skjules automatisk, hvis der ikke er tilføjet billeder. Når du uploader billeder, vises de med paginering og fuldskærms-visning.',
+        }),
+      },
+    }),
     settings: singleton({
       label: 'Generelle Foreningsoplysninger',
       path: 'src/content/settings/index',
