@@ -128,11 +128,11 @@ export default config({
         okInfoText: fields.text({
           label: 'Støt med OK Detaljeret Beskrivelse',
           multiline: true,
-          defaultValue: 'Når du tilknytter dit OK Benzinkort eller OK Appen til Rathlouskolens Støtteforening (Sponsornummer: 56 16 02), støtter OK vores forening uden at det koster dig en ekstra øre.',
+          defaultValue: 'Når du tilknytter dit OK Benzinkort eller OK Appen til Rathlouskolens Støtteforening (Sponsornummer: 784473), støtter OK vores forening uden at det koster dig en ekstra øre.',
         }),
         okSponsorNumber: fields.text({
           label: 'OK Sponsornummer',
-          defaultValue: '56 16 02',
+          defaultValue: '784473',
         }),
         okLink: fields.url({
           label: 'OK Støt Link',
