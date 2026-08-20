@@ -65,6 +65,10 @@ const okLogo = settings?.okLogo || '/images/support/ok-logo.svg';
 
 const donationTitle = settings?.donationTitle || 'Giv et engangsbidrag';
 const donationText = settings?.donationText || 'Ønsker du eller din virksomhed at støtte med et valgfrit beløb, sponsorat eller gave? Alle bidrag gør en direkte forskel for elever og skole.';
+
+// MobilePay Instructions formatting: replaces @mobilepay placeholder or defaults cleanly
+const rawMobilePayInstructions = settings?.mobilePayInstructions || 'Scan QR-koden med MobilePay eller overfør til boks @mobilepay';
+const mobilePayParts = rawMobilePayInstructions.split('@mobilepay');
 ---
 
 <Layout title={heroTitle} description={heroSubtitle}>
