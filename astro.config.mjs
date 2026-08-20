@@ -13,5 +13,6 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     react(),
+    keystatic(),
   ],
 });
