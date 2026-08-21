@@ -26,6 +26,7 @@ quotes:
     author: '- Skoleleder Dorte Halberg'
 mobilePayNumber: '234380'
 mobilePayInstructions: Scan QR-koden med MobilePay eller overfør til boks @mobilepay
+mobilePayQr: /images/uploads/mobilePayQr.png
 membershipFee: Kun 150 kr. per år for hele husstanden
 donationTitle: Giv et engangsbidrag
 donationText: >-
