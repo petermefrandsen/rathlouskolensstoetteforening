@@ -77,6 +77,8 @@ Under **Generelle Foreningsoplysninger** (Settings Singleton):
 | **Citater (Karrusel)** | Up to 5 quotes with quote text and author | Automatically rotates every 6s if > 1 quote. Static block if 1 quote. |
 | **MobilePay Nummer / Boks** | Association MobilePay box (e.g. `86561844`) | Injected wherever `@mobilepay` placeholder is used |
 | **MobilePay Instruktionstekst** | Instruction copy for payment | Use `@mobilepay` to automatically inject the bold number |
+| **Indmeldelse Link (Knap URL)** | Web address for the membership CTA button | Direct link (e.g. MobilePay or Min Forening) |
+| **Indmeldelse Knap Tekst** | Label text for the membership CTA button | Defaults to `Klik her og bliv medlem` |
 | **Dokumenter (Vedtægter, Privatlivspolitik, Handelsbetingelser)** | Dual-support: Upload PDF file OR insert external link | **File upload takes strict precedence**. If file is removed, falls back to URL. Opens in new tab automatically. |
 | **Galleri Sektion** | Array of images with captions and tags | **Auto-hides** from the page and top navigation menu if empty. When images exist, renders a paginated grid with a fullscreen lightbox modal. |
 | **Kontakt Sektion** | Contact text, person name, email, phone, CVR, and address | Direct click-to-email and click-to-call action cards |

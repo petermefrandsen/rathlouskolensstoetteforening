@@ -105,6 +105,16 @@ export default config({
           label: 'Årligt Kontingent Tekst',
           defaultValue: 'Kun 150 kr. per år for hele husstanden',
         }),
+        membershipUrl: fields.url({
+          label: 'Indmeldelse Link (Knap URL)',
+          description: 'Link som knappen fører til (f.eks. Min Forening eller MobilePay)',
+          defaultValue:
+            'https://web.minforening.dk/invitation?clubToken=z1_x5AbDfmmD6LgM1PCdhL16NI_4aWVn9pc1qWX2BYqFuohwntawX_JZeU5uJVntK8K8jJH2YZz6y_yyPVTYvA%3D%3D&fbclid=IwY2xjawGpzs5leHRuA2FlbQIxMQABHU4U0jSQLNSOykXAA4hEecblhN0Yjl_BfEgO2QJpwfjCzMLfsrGZlKCXsA_aem_oLaZjsSKEkoWCKKxnXNuLg',
+        }),
+        membershipButtonText: fields.text({
+          label: 'Indmeldelse Knap Tekst',
+          defaultValue: 'Klik her og bliv medlem',
+        }),
 
         // One-time donation
         donationTitle: fields.text({

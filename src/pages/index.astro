@@ -29,6 +29,8 @@ const heroImage = settings?.heroImage || 'https://lh3.googleusercontent.com/aida
 const mobilePayNumber = settings?.mobilePayNumber || '86561844';
 const mobilePayQr = settings?.mobilePayQr || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQI86rJpubHtLBfzayBgHWKSA7LoQE5Mw8kb2arKLr0seiopfGT6eY-vvAWjMVTKmiBcxSoroeFIGWKYY_PxD6zLnCBL2pawvCZiasEGu0G0bukFqvV2xaP0cjl_R8H7Dbb4ltwSkRFzbHtIdYQycDDV0zmgmlXDLE5asPMCV7cL7RnlddirL6CraeHTTlE9iNM6Ykko_pJtDvhMoD2ZGl3am-WZCaUDh8TWPPxJ7k0F3xS0UFqvmE';
 const membershipFee = settings?.membershipFee || 'Kun 150 kroner per år for hele husstanden';
+const membershipUrl = settings?.membershipUrl || 'https://web.minforening.dk/invitation?clubToken=z1_x5AbDfmmD6LgM1PCdhL16NI_4aWVn9pc1qWX2BYqFuohwntawX_JZeU5uJVntK8K8jJH2YZz6y_yyPVTYvA%3D%3D&fbclid=IwY2xjawGpzs5leHRuA2FlbQIxMQABHU4U0jSQLNSOykXAA4hEecblhN0Yjl_BfEgO2QJpwfjCzMLfsrGZlKCXsA_aem_oLaZjsSKEkoWCKKxnXNuLg';
+const membershipButtonText = settings?.membershipButtonText || 'Klik her og bliv medlem';
 const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com';
 const cvr = settings?.cvr || '86561844';
 const address = settings?.address || 'Rosensgade 83, 8300 Odder';
@@ -60,8 +62,8 @@ const okSubtitle = settings?.okSubtitle || 'Støt Rathlouskolens Støtteforening
 const okInfoText = settings?.okInfoText || 'Når du tilknytter dit OK Benzinkort eller OK Appen til Rathlouskolens Støtteforening (Sponsornummer: 784473), støtter OK vores forening uden at det koster dig en ekstra øre.';
 const okSponsorNumber = settings?.okSponsorNumber || '784473';
 const okLink = settings?.okLink || 'https://www.ok.dk/privat/hjaelp/stoet-lokalt/hvordan-stoetter-jeg-lokalt-med-ok';
-const okBanner = settings?.okBanner || '/images/support/ok-banner.svg';
-const okLogo = settings?.okLogo || '/images/support/ok-logo.svg';
+const okBanner = settings?.okBanner || '/images/support/okBanner.svg';
+const okLogo = settings?.okLogo || '/images/support/okLogo.svg';
 
 const donationTitle = settings?.donationTitle || 'Giv et engangsbidrag';
 const donationText = settings?.donationText || 'Ønsker du eller din virksomhed at støtte med et valgfrit beløb, sponsorat eller gave? Alle bidrag gør en direkte forskel for elever og skole.';
@@ -169,12 +171,12 @@ Foreningens indtægter opstår ved forskellige arrangementer afholdt af Støttef
           </div>
 
           <a
-            href="https://mobilepay.dk"
+            href={membershipUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="bg-primary text-on-primary text-sm font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity shadow-sm inline-block"
           >
-            Meld dig ind via MobilePay
+            {membershipButtonText}
           </a>
         </div>
 
