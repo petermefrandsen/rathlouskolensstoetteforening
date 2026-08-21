@@ -48,7 +48,7 @@ okLogo: /images/support/okLogo.svg
 grantEmail: stoetteforeningen@rathlouskolen.com
 cvr: '44343630'
 address: Rosensgade 83, 8300 Odder
-phone: '86561844'
+phone: '31224202'
 galleryTitle: GALLERI
 gallerySubtitle: Billeder og glimt fra støtteforeningens aktiviteter og arrangementer.
 galleryImages: []
@@ -56,3 +56,5 @@ contactTitle: KONTAKT OS
 contactSubtitle: >-
   Har du spørgsmål til støtteforeningen, arrangementer eller indmeldelse? Skriv
   eller ring endelig til os.
+bylawsFile: /files/bylawsFile.pdf
+termsFile: /files/termsFile.pdf
