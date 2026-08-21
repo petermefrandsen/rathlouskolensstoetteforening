@@ -24,13 +24,13 @@ quotes:
       en meget lærerigt for klasserne og mange er utrolige kreative med både
       ansøgninger og hvad der søges til.
     author: '- Skoleleder Dorte Halberg'
-mobilePayNumber: '86561844'
-mobilePayInstructions: 'Scan QR-koden med MobilePay eller overfør til boks @mobilepay'
+mobilePayNumber: '234380'
+mobilePayInstructions: Scan QR-koden med MobilePay eller overfør til boks @mobilepay
 membershipFee: Kun 150 kr. per år for hele husstanden
 donationTitle: Giv et engangsbidrag
 donationText: >-
-  Ønsker du eller din virksomhed at støtte med et valgfrit beløb, sponsorat eller
-  gave? Alle bidrag gør en direkte forskel for elever og skole.
+  Ønsker du eller din virksomhed at støtte med et valgfrit beløb, sponsorat
+  eller gave? Alle bidrag gør en direkte forskel for elever og skole.
 okTitle: Støt Rathlouskolen med OK
 okSubtitle: >-
   Støt Rathlouskolens Støtteforening kvit og frit, hver gang du tanker, lader
@@ -40,9 +40,10 @@ okInfoText: >-
   Støtteforening (Sponsornummer: 784473), støtter OK vores forening uden at det
   koster dig en ekstra øre.
 okSponsorNumber: '784473'
-okLink: 'https://www.ok.dk/privat/hjaelp/stoet-lokalt/hvordan-stoetter-jeg-lokalt-med-ok'
-okBanner: /images/support/ok-banner.svg
-okLogo: /images/support/ok-logo.svg
+okLink: >-
+  https://www.ok.dk/privat/hjaelp/stoet-lokalt/hvordan-stoetter-jeg-lokalt-med-ok
+okBanner: /images/support/okBanner.svg
+okLogo: /images/support/okLogo.svg
 grantEmail: stoetteforeningen@rathlouskolen.com
 cvr: '44343630'
 address: Rosensgade 83, 8300 Odder
