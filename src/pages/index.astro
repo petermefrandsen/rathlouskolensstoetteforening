@@ -25,7 +25,7 @@ const galleryImages = (settings?.galleryImages || []) as {
 // Fallbacks if not yet edited in Keystatic CMS
 const heroTitle = settings?.heroTitle || 'Rathlouskolens Støtteforening';
 const heroSubtitle = settings?.heroSubtitle || 'Støtter op om skolen for elever og personale';
-const heroImage = settings?.heroImage || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDRVstlz48ngbeYLuSEsBgDQdtNror6Ai-PhUh2Lp8s4cQkdbCIXQVK_Gxtm7qWixciq-7acAyVz7KPGkjaO7m166qLhMMtTNQcCKkqR9ffg2wD9FLchjw8CZBHGq7o2eqqN2Z1WVBOtkwRHeyIBkOHw5nBPd34jFZ2GWkydwpoLuvYptDFsBvkux5MH6pcgj8l0epIFkDp-b52BQ3uFg6l_TMu8RFlRYYE8twkzK7uONBN0z3b7RgFbobnX3qJfa_khg';
+const heroImage = settings?.heroImage || '/images/uploads/heroImage.svg';
 const mobilePayNumber = settings?.mobilePayNumber || '86561844';
 const mobilePayQr = settings?.mobilePayQr || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQI86rJpubHtLBfzayBgHWKSA7LoQE5Mw8kb2arKLr0seiopfGT6eY-vvAWjMVTKmiBcxSoroeFIGWKYY_PxD6zLnCBL2pawvCZiasEGu0G0bukFqvV2xaP0cjl_R8H7Dbb4ltwSkRFzbHtIdYQycDDV0zmgmlXDLE5asPMCV7cL7RnlddirL6CraeHTTlE9iNM6Ykko_pJtDvhMoD2ZGl3am-WZCaUDh8TWPPxJ7k0F3xS0UFqvmE';
 const membershipFee = settings?.membershipFee || 'Kun 150 kroner per år for hele husstanden';
@@ -35,7 +35,10 @@ const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com'
 const cvr = settings?.cvr || '86561844';
 const address = settings?.address || 'Rosensgade 83, 8300 Odder';
 const phone = settings?.phone || '86561844';
-const logoUrl = 'https://lh3.googleusercontent.com/aida/AP1WRLv-auhEXEYBuE8g7TwTMU2UFfhUG9gA1b8D_iNIvjS5NLvMO3AKxSYhxJL-BYQlnUfOlEVdJODwsztw4d_poqtcwcMH_8OOs-mMu61Iu64JCECiqVJHBOha78TPB23_F9k46jYIbNMHmgMLQztOlefqZtujkE2fXKG1eA8w-yVkhwyDJpcp_7Uts5XuGj7mocZPvFZUO--iLyJnPCg4i3BXzW3zQiMhzrocgDs2lmmOH_8P9YQru2uuSw';
+const logoUrl = settings?.logo || '/images/logo.png';
+const heroLogoUrl = (settings?.logo && settings.logo !== '/images/logo.png')
+  ? settings.logo
+  : '/images/logo-white.png';
 // Document links: Uploaded file takes precedence over URL. If file is removed, falls back to URL or '#'
 const bylawsHref = (settings?.bylawsFile && settings.bylawsFile.trim()) 
   ? settings.bylawsFile 
@@ -85,10 +88,9 @@ const mobilePayParts = rawMobilePayInstructions.split('@mobilepay');
       ></div>
       <div class="relative z-10 text-center max-w-2xl flex flex-col items-center">
         <img
-          alt="Logo"
-          class="h-20 md:h-28 w-auto mx-auto mb-4 object-contain"
-          src={logoUrl}
-          style="filter: brightness(0) invert(1);"
+          alt="Rathlouskolens Støtteforening Logo"
+          class="h-20 md:h-28 w-auto mx-auto mb-4 object-contain drop-shadow-sm"
+          src={heroLogoUrl}
         />
         <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-3 text-white">
           {heroTitle}

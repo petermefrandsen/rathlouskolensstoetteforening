@@ -45,6 +45,12 @@ export default config({
       label: 'Generelle Foreningsoplysninger',
       path: 'src/content/settings/index',
       schema: {
+        logo: fields.image({
+          label: 'Foreningens Logo',
+          description: 'Logo der vises i topmenuen og hero-sektionen (anbefalet: transparent PNG eller SVG)',
+          directory: 'public/images/uploads',
+          publicPath: '/images/uploads',
+        }),
         heroTitle: fields.text({
           label: 'Hero Overskrift',
           defaultValue: 'Rathlouskolens Støtteforening',
@@ -56,6 +62,7 @@ export default config({
         }),
         heroImage: fields.image({
           label: 'Hero Baggrundsbillede',
+          description: 'Baggrundsbillede der vises bag teksten i hero-sektionen',
           directory: 'public/images/uploads',
           publicPath: '/images/uploads',
         }),

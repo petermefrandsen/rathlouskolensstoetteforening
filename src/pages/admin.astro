@@ -9,7 +9,7 @@ const reader = createReader(process.cwd(), keystaticConfig);
 const guide = await reader.singletons.guide.read();
 const settings = await reader.singletons.settings.read();
 
-const logoUrl = 'https://lh3.googleusercontent.com/aida/AP1WRLv-auhEXEYBuE8g7TwTMU2UFfhUG9gA1b8D_iNIvjS5NLvMO3AKxSYhxJL-BYQlnUfOlEVdJODwsztw4d_poqtcwcMH_8OOs-mMu61Iu64JCECiqVJHBOha78TPB23_F9k46jYIbNMHmgMLQztOlefqZtujkE2fXKG1eA8w-yVkhwyDJpcp_7Uts5XuGj7mocZPvFZUO--iLyJnPCg4i3BXzW3zQiMhzrocgDs2lmmOH_8P9YQru2uuSw';
+const logoUrl = settings?.logo || '/images/logo.png';
 const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com';
 const cvr = settings?.cvr || '86561844';
 const address = settings?.address || 'Rosensgade 83, 8300 Odder';

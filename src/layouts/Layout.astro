@@ -4,12 +4,115 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  canonical?: string;
 }
 
 const {
   title = 'Rathlouskolens Støtteforening',
   description = 'Støtter op om skolen for elever og personale',
+  image = '/apple-touch-icon.png',
+  canonical,
 } = Astro.props;
+
+const siteUrl = 'https://www.rathlouskolensstøtteforening.dk';
+const canonicalUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
+const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['NGO', 'EducationalOrganization'],
+      '@id': `${siteUrl}/#organization`,
+      name: 'Rathlouskolens Støtteforening',
+      alternateName: 'Støtteforeningen for Rathlouskolen',
+      url: siteUrl,
+      logo: `${siteUrl}/images/logo.png`,
+      image: `${siteUrl}/apple-touch-icon.png`,
+      description:
+        'Frivillig støtteforening for Rathlouskolen i Odder, der samler midler ind til glæde for elever og personale gennem arrangementer, medlemskaber, sponsorater og OK-aftale.',
+      taxID: '44343630',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Rosensgade 83',
+        addressLocality: 'Odder',
+        postalCode: '8300',
+        addressCountry: 'DK',
+      },
+      telephone: '+4531224202',
+      email: 'stoetteforeningen@rathlouskolen.com',
+      parentOrganization: {
+        '@type': 'EducationalOrganization',
+        name: 'Rathlouskolen',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Rosensgade 83',
+          addressLocality: 'Odder',
+          postalCode: '8300',
+          addressCountry: 'DK',
+        },
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'Rathlouskolens Støtteforening',
+      description: 'Støtter op om skolen for elever og personale',
+      inLanguage: 'da-DK',
+      publisher: {
+        '@id': `${siteUrl}/#organization`,
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${siteUrl}/#faq`,
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Hvad er Rathlouskolens Støtteforening?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Rathlouskolens Støtteforening er en frivillig forening, som alle kan være medlem af. Foreningen har til formål at støtte op om Rathlouskolen og samle midler ind, som kan være til glæde for elever og personale på skolen.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Hvad koster et medlemskab af støtteforeningen?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Et medlemskab koster kun 150 kr. per år for hele husstanden. Tilmelding kan ske via Min Forening eller MobilePay.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Hvordan ansøger man om midler fra støtteforeningen?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Alle skolens brugere, klasser og personale kan søge om midler ved at sende en ansøgning til stoetteforeningen@rathlouskolen.com. Ansøgningerne uddeles på Mod-til-at-glæde-dagen fredag før påske.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Hvordan støtter man Rathlouskolen med OK Benzin og El?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Du kan støtte Rathlouskolens Støtteforening gratis hver gang du tanker, lader eller vasker hos OK ved at tilknytte sponsornummer 784473 til dit OK Benzinkort eller i OK Appen.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Hvad er støtteforeningens MobilePay nummer og CVR?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Foreningens MobilePay-boks er 234380, og foreningens CVR-nummer er 44343630.',
+          },
+        },
+      ],
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -17,8 +120,16 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Browser Favicons & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#006385" />
+    <meta name="apple-mobile-web-app-title" content="Støtteforeningen" />
+    <meta name="application-name" content="Rathlouskolens Støtteforening" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,8 +143,33 @@ const {
       rel="stylesheet"
     />
 
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="keywords" content="Rathlouskolens Støtteforening, Rathlouskolen, Odder, friskole, støtteforening, Mod-til-at-glæde-dag, OK sponsorat, MobilePay 234380, foreningsliv" />
+    <meta name="author" content="Rathlouskolens Støtteforening" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Rathlouskolens Støtteforening" />
+    <meta property="og:locale" content="da_DK" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- AI SEO & GEO JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-background text-on-background min-h-screen pt-20">
     <slot />
