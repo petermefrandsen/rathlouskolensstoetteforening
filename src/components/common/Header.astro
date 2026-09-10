@@ -72,7 +72,14 @@ const navItems = allNavItems.filter((item) => item.show !== false);
 </header>
 
 <script>
+  let cleanupScrollSpy: (() => void) | null = null;
+
   function setupScrollSpy() {
+    if (cleanupScrollSpy) {
+      cleanupScrollSpy();
+      cleanupScrollSpy = null;
+    }
+
     const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
     if (!navLinks.length) return;
 
@@ -81,11 +88,16 @@ const navItems = allNavItems.filter((item) => item.show !== false);
       const hash = link.getAttribute('href');
       if (hash && hash.startsWith('#')) {
         const target = document.querySelector<HTMLElement>(hash);
-        if (target) {
+        if (target && !sections.includes(target)) {
           sections.push(target);
         }
       }
     });
+
+    if (!sections.length) return;
+
+    // Ensure sections are sorted by their visual position on the page
+    sections.sort((a, b) => a.offsetTop - b.offsetTop);
 
     function setActiveLink(activeId: string | null) {
       navLinks.forEach((link) => {
@@ -101,35 +113,151 @@ const navItems = allNavItems.filter((item) => item.show !== false);
       });
     }
 
+    let isClickScrolling = false;
+    let clickedTargetId: string | null = null;
+    let scrollEndTimer: ReturnType<typeof setTimeout> | null = null;
+
+    function clearClickLock() {
+      isClickScrolling = false;
+      if (scrollEndTimer) {
+        clearTimeout(scrollEndTimer);
+        scrollEndTimer = null;
+      }
+    }
+
+    // When the user manually scrolls (mouse wheel, touch swipe, keyboard navigation),
+    // clear the click lock so normal position tracking takes over.
+    function onManualUserScroll() {
+      isClickScrolling = false;
+      clickedTargetId = null;
+      if (scrollEndTimer) {
+        clearTimeout(scrollEndTimer);
+        scrollEndTimer = null;
+      }
+    }
+
     // Scroll listener for robust active anchor detection
     function onScroll() {
+      if (isClickScrolling && clickedTargetId) {
+        setActiveLink(clickedTargetId);
+        if (scrollEndTimer) clearTimeout(scrollEndTimer);
+        scrollEndTimer = setTimeout(clearClickLock, 150);
+        return;
+      }
+
+      const scrollHeight = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      );
+      const isAtBottom =
+        window.innerHeight + window.scrollY >= scrollHeight - 50;
       const scrollPosition = window.scrollY + 140; // Header height + offset
+
       let currentSectionId: string | null = null;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section.offsetTop <= scrollPosition) {
-          currentSectionId = section.id;
-          break;
+      if (isAtBottom && sections.length > 0) {
+        // When at the bottom, if the user clicked a visible section near the bottom,
+        // prioritize it. Otherwise, default to the last section in navigation.
+        if (
+          clickedTargetId &&
+          sections.some((s) => s.id === clickedTargetId)
+        ) {
+          currentSectionId = clickedTargetId;
+        } else {
+          currentSectionId = sections[sections.length - 1].id;
+        }
+      } else {
+        // User is not at the bottom; clear clicked target override
+        if (!isClickScrolling) {
+          clickedTargetId = null;
+        }
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          if (section.offsetTop <= scrollPosition) {
+            currentSectionId = section.id;
+            break;
+          }
+        }
+
+        // If at the very top, highlight the first section (Om os)
+        if (!currentSectionId && window.scrollY < 200 && sections.length > 0) {
+          currentSectionId = sections[0].id;
         }
       }
 
-      // If at the very top, highlight the first section (Om os)
-      if (!currentSectionId && window.scrollY < 200 && sections.length > 0) {
-        currentSectionId = sections[0].id;
+      if (currentSectionId) {
+        setActiveLink(currentSectionId);
       }
-
-      setActiveLink(currentSectionId);
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    // Also listen to hashchange for manual clicks
-    window.addEventListener('hashchange', () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash) setActiveLink(hash);
+    // Listen to clicks on all header anchor links (nav items & CTA buttons)
+    const allHeaderLinks = document.querySelectorAll<HTMLAnchorElement>('header a[href^="#"]');
+    const onLinkClick = (e: MouseEvent) => {
+      const link = e.currentTarget as HTMLAnchorElement;
+      const href = link.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+      const targetId = href.slice(1);
+      const targetSection = sections.find((s) => s.id === targetId);
+      if (!targetSection) return;
+
+      isClickScrolling = true;
+      clickedTargetId = targetId;
+      setActiveLink(targetId);
+
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(clearClickLock, 1000);
+    };
+
+    allHeaderLinks.forEach((link) => {
+      link.addEventListener('click', onLinkClick);
     });
 
-    onScroll();
+    const onHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && sections.some((s) => s.id === hash)) {
+        clickedTargetId = hash;
+        setActiveLink(hash);
+      }
+    };
+
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
+    window.addEventListener('scrollend', clearClickLock, { passive: true, signal });
+    window.addEventListener('wheel', onManualUserScroll, { passive: true, signal });
+    window.addEventListener('touchmove', onManualUserScroll, { passive: true, signal });
+    window.addEventListener(
+      'keydown',
+      (e) => {
+        if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Space', 'Home', 'End'].includes(e.key)) {
+          onManualUserScroll();
+        }
+      },
+      { passive: true, signal }
+    );
+    window.addEventListener('resize', onScroll, { passive: true, signal });
+    window.addEventListener('hashchange', onHashChange, { signal });
+
+    // Initial state check on load
+    const initialHash = window.location.hash.replace('#', '');
+    if (initialHash && sections.some((s) => s.id === initialHash)) {
+      clickedTargetId = initialHash;
+      setActiveLink(initialHash);
+    } else {
+      onScroll();
+    }
+
+    cleanupScrollSpy = () => {
+      abortController.abort();
+      allHeaderLinks.forEach((link) => {
+        link.removeEventListener('click', onLinkClick);
+      });
+      if (scrollEndTimer) {
+        clearTimeout(scrollEndTimer);
+      }
+    };
   }
 
   setupScrollSpy();
