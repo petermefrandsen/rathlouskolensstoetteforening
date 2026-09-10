@@ -1,0 +1,26 @@
+{
+  "name": "Rathlouskolens Støtteforening",
+  "short_name": "Støtteforeningen",
+  "description": "Støtter op om Rathlouskolen for elever og personale",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f9fd",
+  "theme_color": "#006385",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
