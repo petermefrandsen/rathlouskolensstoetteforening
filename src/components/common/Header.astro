@@ -22,14 +22,14 @@ const navItems = allNavItems.filter((item) => item.show !== false);
 
 <header class="fixed top-0 left-0 w-full z-50 bg-surface/95 backdrop-blur-sm border-b border-outline-variant">
   <div class="max-w-container-max mx-auto flex justify-between items-center px-4 md:px-8 h-20">
-    <a href="/" class="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0 mr-2">
+    <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0 mr-4">
       <img
         alt="Rathlouskolens Støtteforening Logo"
         class="h-10 sm:h-12 md:h-12 w-auto object-contain shrink-0"
         src={logoUrl}
       />
-      <!-- Mobile / Small screen title text -->
-      <span class="md:hidden font-bold text-[15px] sm:text-lg leading-snug tracking-tight text-on-surface line-clamp-2">
+      <!-- Desktop title text -->
+      <span class="hidden md:block font-bold text-base lg:text-lg leading-snug tracking-tight text-on-surface whitespace-nowrap">
         Rathlouskolens Støtteforening
       </span>
     </a>
