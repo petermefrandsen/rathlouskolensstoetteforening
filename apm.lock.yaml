@@ -1,0 +1,13 @@
+lockfile_version: '1'
+apm_version: 0.31.0
+dependencies:
+- repo_url: withastro/astro
+  name: astro-developer
+  host: github.com
+  resolved_commit: 28d59a92f99f6b1acbafb98e6b1e2f22bb74c71f
+  version: unknown
+  virtual_path: .agents/skills/astro-developer
+  is_virtual: true
+  package_type: claude_skill
+  content_hash: sha256:82a25060f02c2844482cd09bc1388989af15e6386d397346e542ce5f2e48bda0
+deployments: []

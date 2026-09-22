@@ -1,0 +1,34 @@
+version: 2
+updates:
+  # Keep npm dependencies up to date
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7        # Wait 7 days before opening PRs — mitigates supply chain attacks
+      semver-major-days: 30  # Extra caution for breaking changes
+      semver-minor-days: 7
+      semver-patch-days: 3   # Security patches still land quickly
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    assignees:
+      - "petermefrandsen"
+
+  # Keep GitHub Actions up to date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7        # Same protection for action pins
+      semver-major-days: 30
+      semver-patch-days: 3
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "github-actions"
+    assignees:
+      - "petermefrandsen"

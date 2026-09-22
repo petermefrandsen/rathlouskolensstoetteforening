@@ -26,3 +26,7 @@ Thumbs.db
 !.vscode/settings.json
 !.vscode/extensions.json
 .idea/
+
+
+# APM dependencies
+apm_modules/

@@ -1,3 +1,4 @@
+---
 forEditors: >-
   1. Opret en gratis konto på https://github.com/join med din egen e-mailadresse.
   2. Send dit GitHub-brugernavn til webansvarlig (eller formand for støtteforeningen).
@@ -9,8 +10,12 @@ forDevelopers: >-
   1. Gå til GitHub: https://github.com/PretiumBusiness/rathlouskolensstoetteforening/settings/access
   2. Klik på "Add people" og søg efter brugerens GitHub-brugernavn eller e-mail.
   3. Vælg rollen "Write" (giver adgang til at redigere indhold via Keystatic CMS).
-  4. Brugeren modtager en invitationsmail og kan herefter logge ind direkte på https://www.rathlouskolensstøtteforening.dk/keystatic.
+  4. Brugeren modtager en invitationsmail og kan herefter logge ind direkte på
+  https://www.rathlouskolensstøtteforening.dk/keystatic.
 tipsAndTricks: >-
-  • MobilePay: Du kan bruge @mobilepay i instruktionsteksten, så indsættes nummeret automatisk med fed skrift.
-  • Dokumenter: Uploader du en PDF-fil overskriver den automatisk et indsat link. Sletter du PDF-filen falder den tilbage på linket.
-  • Galleri: Galleriet og menupunktet skjules automatisk, hvis der ikke er tilføjet billeder. Når du uploader billeder, vises de med paginering og fuldskærms-visning.
+  • MobilePay: Du kan bruge @mobilepay i instruktionsteksten, så indsættes nummeret
+  automatisk med fed skrift.
+  • Dokumenter: Uploader du en PDF-fil overskriver den automatisk et indsat link.
+  Sletter du PDF-filen falder den tilbage på linket.
+  • Galleri: Galleriet og menupunktet skjules automatisk, hvis der ikke er tilføjet billeder.
+  Når du uploader billeder, vises de med paginering og fuldskærms-visning.

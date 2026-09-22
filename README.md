@@ -1,10 +1,11 @@
 # Rathlouskolens Støtteforening — Developer & Content Manager Guide
 
-A modern, fast, and Git-backed website for **Rathlouskolens Støtteforening** built with [Astro](https://astro.build), [Tailwind CSS](https://tailwindcss.com), and [Keystatic CMS](https://keystatic.com), deployed to [Cloudflare](https://cloudflare.com).
+A modern, fast, and Git-backed site for **Rathlouskolens Støtteforening** built with [Astro](https://astro.build), [Tailwind CSS](https://tailwindcss.com), and [Keystatic CMS](https://keystatic.com), deployed to [Cloudflare](https://cloudflare.com).
 
 ---
 
 ## 📋 Table of Contents
+
 1. [Tech Stack & Architecture](#-tech-stack--architecture)
 2. [Getting Started (Local Development)](#-getting-started-local-development)
 3. [Content Management with Keystatic](#-content-management-with-keystatic)
@@ -29,6 +30,7 @@ A modern, fast, and Git-backed website for **Rathlouskolens Støtteforening** bu
 ## 💻 Getting Started (Local Development)
 
 ### Prerequisites
+
 - Node.js `v20.x` or `v22.x`
 - `npm` (or `pnpm` / `yarn`)
 - Git
@@ -47,7 +49,7 @@ npm install
 npm run dev
 ```
 
-- **Frontend website**: [http://localhost:4321](http://localhost:4321)
+- **Frontend site**: [http://localhost:4321](http://localhost:4321)
 - **Local Keystatic Admin CMS**: [http://localhost:4321/keystatic](http://localhost:4321/keystatic)
 
 ### Production Build Test
@@ -64,14 +66,16 @@ npm run preview
 All content is Git-backed. Changes saved in the admin UI are committed as code into `src/content/settings/index.yaml` and media files in `public/`.
 
 ### 1. Accessing the CMS in Production
+
 - **URL**: `https://www.rathlouskolensstøtteforening.dk/keystatic`
 - **Authentication**: Keystatic Cloud (`rath-stoetteforening/rathloustotte-site`). Sign in with any GitHub account that has **Collaborator / Write** permissions to the repository.
 
 ### 2. Available Content Fields
+
 Under **Generelle Foreningsoplysninger** (Settings Singleton):
 
 | Field | Description | Special Behavior / Placeholders |
-|---|---|---|
+| --- | --- | --- |
 | **Hero Title & Subtitle** | Main heading on the homepage banner | Displays on top of background image |
 | **Om Støtteforeningen Tekst** | Multiline text for the About section | Preserves paragraphs cleanly |
 | **Citater (Karrusel)** | Up to 5 quotes with quote text and author | Automatically rotates every 6s if > 1 quote. Static block if 1 quote. |
@@ -90,6 +94,7 @@ Under **Generelle Foreningsoplysninger** (Settings Singleton):
 The site uses the **Academic Vitality** theme synchronized from Stitch:
 
 ### Brand Color Tokens (in `tailwind.config.mjs`)
+
 - `primary`: `#006385` (Deep Sky Blue — headers, primary buttons, active states)
 - `primary-container`: `#217da3`
 - `secondary`: `#b6171e` (Crimson accent)
@@ -100,6 +105,7 @@ The site uses the **Academic Vitality** theme synchronized from Stitch:
 - `inverse-surface`: `#2d3134` (Footer background)
 
 ### Responsive & Navigation Details
+
 - Fixed 80px header with blur backdrop.
 - Mobile title brand visible next to the logo.
 - Automatic scroll-spy highlighting for desktop navigation links.
@@ -114,7 +120,7 @@ The official domain contains the Danish character **ø** (`rathlouskolensstøtte
 Because DNS and international OAuth services require ASCII (Punycode):
 
 | Format | Domain String |
-|---|---|
+| --- | --- |
 | **Unicode (Danish)** | `https://www.rathlouskolensstøtteforening.dk` |
 | **Punycode (ACE)** | `https://www.xn--rathlouskolenssttteforening-q0c.dk` |
 | **Apex (non-www) Punycode** | `https://xn--rathlouskolenssttteforening-q0c.dk` |
@@ -128,6 +134,7 @@ Because DNS and international OAuth services require ASCII (Punycode):
 The project deploys automatically to Cloudflare when changes are merged into `main`.
 
 ### Build & Worker Configuration
+
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist`
 - **Configuration File**: [`wrangler.jsonc`](./wrangler.jsonc)
@@ -196,16 +203,19 @@ The project deploys automatically to Cloudflare when changes are merged into `ma
 ## 🔧 Common Tasks & Runbooks
 
 ### 1. Adding a New Administrator to the CMS
+
 1. Invite the user's GitHub account to the repository: [PretiumBusiness/rathlouskolensstoetteforening](https://github.com/PretiumBusiness/rathlouskolensstoetteforening) with **Write** (or Admin) access.
 2. Ask them to navigate to `https://www.rathlouskolensstøtteforening.dk/keystatic` and log in with GitHub.
 
 ### 2. Adding a New Content Field
+
 1. Open [`keystatic.config.ts`](./keystatic.config.ts).
 2. Add the field under `schema: { ... }` using Keystatic's `fields.*` API.
 3. Open [`src/pages/index.astro`](./src/pages/index.astro) to render the new field from `settings`.
 4. Commit and push to `main` — Cloudflare will automatically build and deploy.
 
 ### 3. Updating the Association MobilePay QR Code or PDF Bylaws
+
 1. Log in to `/keystatic`.
 2. Click **Generelle Foreningsoplysninger**.
 3. Drag & drop the new image or PDF under the respective field.
