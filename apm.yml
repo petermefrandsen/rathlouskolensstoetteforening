@@ -1,0 +1,15 @@
+---
+# Agent Package Manager manifest
+# https://microsoft.github.io/apm/
+# Run: apm install
+name: rathlouskolens-stoetteforening
+version: 1.0.0
+
+targets:
+  - agent-skills
+
+dependencies:
+  apm:
+    # Astro developer skill — comprehensive guide for developing in the Astro
+    # monorepo; covers architecture, debugging, testing, and critical constraints.
+    - withastro/astro/.agents/skills/astro-developer
