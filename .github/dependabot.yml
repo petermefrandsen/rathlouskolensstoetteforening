@@ -24,9 +24,7 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 7        # Same protection for action pins
-      semver-major-days: 30
-      semver-patch-days: 3
+      default-days: 7        # Wait 7 days before opening PRs for GitHub Actions
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
