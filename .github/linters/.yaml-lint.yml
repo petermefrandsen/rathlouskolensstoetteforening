@@ -3,6 +3,8 @@ extends: default
 
 ignore:
   - '**/*.lock.yml'
+  - 'apm.lock.yaml'
+  - 'ghwm.lock'
 
 rules:
   line-length:

@@ -82,7 +82,8 @@ precommit:
 
 super-linter:
 	@echo "[super-linter] Running super-linter via Docker..."
-	@GIT_DIR=$$(git rev-parse --path-format=absolute --git-common-dir) && \
+	@GIT_COMMON_DIR=$$(git rev-parse --path-format=absolute --git-common-dir) && \
+	GIT_DIR=$$(git rev-parse --path-format=absolute --git-dir) && \
 	docker run \
 		--platform linux/amd64 \
 		-e RUN_LOCAL=true \
@@ -90,12 +91,14 @@ super-linter:
 		--env-file .github/super-linter.env \
 		-v $$(pwd):/tmp/lint \
 		-v $$GIT_DIR:$$GIT_DIR \
+		-v $$GIT_COMMON_DIR:$$GIT_COMMON_DIR \
 		--rm \
 		ghcr.io/super-linter/super-linter:v8.6.0
 
 super-linter-fix:
 	@echo "[super-linter-fix] Running super-linter with auto-fix via Docker..."
-	@GIT_DIR=$$(git rev-parse --path-format=absolute --git-common-dir) && \
+	@GIT_COMMON_DIR=$$(git rev-parse --path-format=absolute --git-common-dir) && \
+	GIT_DIR=$$(git rev-parse --path-format=absolute --git-dir) && \
 	docker run \
 		--platform linux/amd64 \
 		-e RUN_LOCAL=true \
@@ -104,5 +107,6 @@ super-linter-fix:
 		--env-file .github/super-linter-fix.env \
 		-v $$(pwd):/tmp/lint \
 		-v $$GIT_DIR:$$GIT_DIR \
+		-v $$GIT_COMMON_DIR:$$GIT_COMMON_DIR \
 		--rm \
 		ghcr.io/super-linter/super-linter:v8.6.0

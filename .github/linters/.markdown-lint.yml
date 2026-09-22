@@ -1,3 +1,4 @@
+---
 # markdownlint configuration for Super-Linter
 # https://github.com/DavidAnson/markdownlint
 default: true
