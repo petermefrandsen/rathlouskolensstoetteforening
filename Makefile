@@ -91,7 +91,7 @@ super-linter:
 		-v $$(pwd):/tmp/lint \
 		-v $$GIT_DIR:$$GIT_DIR \
 		--rm \
-		ghcr.io/super-linter/super-linter:slim-v8.6.0
+		ghcr.io/super-linter/super-linter:v8.6.0
 
 super-linter-fix:
 	@echo "[super-linter-fix] Running super-linter with auto-fix via Docker..."
@@ -105,4 +105,4 @@ super-linter-fix:
 		-v $$(pwd):/tmp/lint \
 		-v $$GIT_DIR:$$GIT_DIR \
 		--rm \
-		ghcr.io/super-linter/super-linter:slim-v8.6.0
+		ghcr.io/super-linter/super-linter:v8.6.0

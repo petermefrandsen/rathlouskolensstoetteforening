@@ -31,7 +31,7 @@ env:
   PRE_SUPER_LINTER_CUSTOM_SCRIPT_PATH: ""
   SUPER_LINTER_CONFIG_PATH: .github/super-linter.env
   SUPER_LINTER_FIX_CONFIG_PATH: .github/super-linter-fix.env
-  RUN_SUPER_LINTER_SLIM: true
+  RUN_SUPER_LINTER_SLIM: false
   RUN_SUPER_LINTER_FIXES: false
 
 jobs:
