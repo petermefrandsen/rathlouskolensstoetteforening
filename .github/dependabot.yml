@@ -17,6 +17,24 @@ updates:
       - "npm"
     assignees:
       - "petermefrandsen"
+    groups:
+      astro-framework:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+      keystatic:
+        patterns:
+          - "@keystatic/*"
+      react-ecosystem:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      tailwind-ecosystem:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
 
   # Keep GitHub Actions up to date
   - package-ecosystem: "github-actions"

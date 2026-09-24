@@ -169,7 +169,7 @@ const jsonLd = {
     <meta name="twitter:image" content={ogImage} />
 
     <!-- AI SEO & GEO JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-background text-on-background min-h-screen pt-20">
     <slot />
