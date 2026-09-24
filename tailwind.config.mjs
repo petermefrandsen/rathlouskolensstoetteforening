@@ -95,7 +95,5 @@ export default {
       },
     },
   },
-  plugins: [
-    import('@tailwindcss/typography'),
-  ],
+  plugins: [],
 };
