@@ -37,7 +37,7 @@ env:
 jobs:
   super-linter:
     name: Run Super-Linter
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, pretium]
     permissions:
       contents: write
       issues: write
