@@ -39,7 +39,7 @@ A modern, fast, and Git-backed site for **Rathlouskolens Støtteforening** built
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/PretiumBusiness/rathlouskolensstoetteforening.git
+git clone https://github.com/petermefrandsen/rathlouskolensstoetteforening.git
 cd rathlouskolensstoetteforening/setup
 
 # 2. Install dependencies
@@ -204,7 +204,7 @@ The project deploys automatically to Cloudflare when changes are merged into `ma
 
 ### 1. Adding a New Administrator to the CMS
 
-1. Invite the user's GitHub account to the repository: [PretiumBusiness/rathlouskolensstoetteforening](https://github.com/PretiumBusiness/rathlouskolensstoetteforening) with **Write** (or Admin) access.
+1. Invite the user's GitHub account to the repository: [petermefrandsen/rathlouskolensstoetteforening](https://github.com/petermefrandsen/rathlouskolensstoetteforening) with **Write** (or Admin) access.
 2. Ask them to navigate to `https://www.rathlouskolensstøtteforening.dk/keystatic` and log in with GitHub.
 
 ### 2. Adding a New Content Field
@@ -221,6 +221,12 @@ The project deploys automatically to Cloudflare when changes are merged into `ma
 3. Drag & drop the new image or PDF under the respective field.
 4. Click **Save** in the top right.
 5. Keystatic commits the change to GitHub, and the live site automatically updates in ~1 minute!
+
+---
+
+## License
+
+Released under the [PolyForm Noncommercial License 1.0.0](./LICENSE). The code and content may be used for noncommercial purposes only; commercial use requires written permission from the association.
 
 ---
 

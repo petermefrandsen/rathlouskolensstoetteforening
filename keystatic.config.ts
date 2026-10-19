@@ -31,7 +31,7 @@ export default config({
           label: 'For Udviklere / Webansvarlige (Sådan giver du andre adgang)',
           multiline: true,
           defaultValue:
-            '1. Gå til GitHub: https://github.com/PretiumBusiness/rathlouskolensstoetteforening/settings/access\n2. Klik på "Add people" og søg efter brugerens GitHub-brugernavn eller e-mail.\n3. Vælg rollen "Write" (giver adgang til at redigere indhold via Keystatic CMS).\n4. Brugeren modtager en invitationsmail og kan herefter logge ind direkte på https://www.rathlouskolensstøtteforening.dk/keystatic.',
+            '1. Gå til GitHub: https://github.com/petermefrandsen/rathlouskolensstoetteforening/settings/access\n2. Klik på "Add people" og søg efter brugerens GitHub-brugernavn eller e-mail.\n3. Vælg rollen "Write" (giver adgang til at redigere indhold via Keystatic CMS).\n4. Brugeren modtager en invitationsmail og kan herefter logge ind direkte på https://www.rathlouskolensstøtteforening.dk/keystatic.',
         }),
         tipsAndTricks: fields.text({
           label: 'Gode råd til indhold',
@@ -116,7 +116,7 @@ export default config({
           label: 'Indmeldelse Link (Knap URL)',
           description: 'Link som knappen fører til (f.eks. Min Forening eller MobilePay)',
           defaultValue:
-            'https://web.minforening.dk/invitation?clubToken=z1_x5AbDfmmD6LgM1PCdhL16NI_4aWVn9pc1qWX2BYqFuohwntawX_JZeU5uJVntK8K8jJH2YZz6y_yyPVTYvA%3D%3D&fbclid=IwY2xjawGpzs5leHRuA2FlbQIxMQABHU4U0jSQLNSOykXAA4hEecblhN0Yjl_BfEgO2QJpwfjCzMLfsrGZlKCXsA_aem_oLaZjsSKEkoWCKKxnXNuLg',
+            'https://web.minforening.dk/invitation?clubToken=z1_x5AbDfmmD6LgM1PCdhL16NI_4aWVn9pc1qWX2BYqFuohwntawX_JZeU5uJVntK8K8jJH2YZz6y_yyPVTYvA%3D%3D',
         }),
         membershipButtonText: fields.text({
           label: 'Indmeldelse Knap Tekst',
