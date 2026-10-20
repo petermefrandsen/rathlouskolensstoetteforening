@@ -1,0 +1,7 @@
+---
+rules:
+  github-app:
+    ignore:
+      # actions/create-github-app-token cannot narrow a token to repository variables
+      # (no permission-variables input); the registry workflow needs Variables: write.
+      - super-linter-lean.yaml
