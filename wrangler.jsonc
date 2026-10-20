@@ -13,5 +13,14 @@
       "binding": "SESSION",
       "id": "27266417fff940c9b3794ae9ac0ec30c"
     }
-  ]
+  ],
+  // Branch previews (wrangler preview) do not inherit bindings from the top level.
+  "previews": {
+    "kv_namespaces": [
+      {
+        "binding": "SESSION",
+        "id": "27266417fff940c9b3794ae9ac0ec30c"
+      }
+    ]
+  }
 }
