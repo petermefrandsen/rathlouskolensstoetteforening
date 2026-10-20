@@ -7,5 +7,11 @@
   "assets": {
     "directory": "dist",
     "binding": "ASSETS"
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "27266417fff940c9b3794ae9ac0ec30c"
+    }
+  ]
 }
