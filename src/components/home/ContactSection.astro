@@ -1,10 +1,11 @@
 ---
+import { formatPhone, telHref, type Contact } from '../../lib/content';
+
 interface Props {
   title?: string;
   subtitle?: string;
-  contactPerson?: string;
+  contacts?: Contact[];
   email?: string;
-  phone?: string;
   address?: string;
   cvr?: string;
 }
@@ -12,11 +13,10 @@ interface Props {
 const {
   title = 'KONTAKT OS',
   subtitle = 'Har du spørgsmål til støtteforeningen, arrangementer eller indmeldelse? Skriv eller ring endelig til os.',
-  contactPerson,
+  contacts = [],
   email = 'stoetteforeningen@rathlouskolen.com',
-  phone = '86561844',
   address = 'Rosensgade 83, 8300 Odder',
-  cvr = '86561844',
+  cvr = '44343630',
 } = Astro.props;
 ---
 
@@ -31,16 +31,35 @@ const {
     <p class="text-base md:text-lg text-on-surface-variant">
       {subtitle}
     </p>
-    {
-      contactPerson && (
-        <p class="text-sm font-semibold text-primary mt-2">
-          {contactPerson}
-        </p>
-      )
-    }
   </div>
 
-  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+  {
+    contacts.length > 0 && (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto mb-4 md:mb-6">
+        {contacts.map((contact) => (
+          <a
+            href={contact.phone ? telHref(contact.phone) : undefined}
+            class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm hover:border-primary hover:shadow-md transition-all duration-200 flex items-start gap-4"
+          >
+            <div class="p-2.5 rounded-lg bg-sky-tint text-primary shrink-0">
+              <span class="material-symbols-outlined text-2xl" aria-hidden="true">call</span>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                {contact.title}
+              </p>
+              <p class="text-sm font-medium text-on-surface">{contact.name}</p>
+              {contact.phone && (
+                <p class="text-sm font-medium text-on-surface">{formatPhone(contact.phone)}</p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="grid sm:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
     <!-- Email Card -->
     <a
       href={`mailto:${email}`}
@@ -59,26 +78,8 @@ const {
       </div>
     </a>
 
-    <!-- Phone Card -->
-    <a
-      href={`tel:${phone}`}
-      class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm hover:border-primary hover:shadow-md transition-all duration-200 flex items-start gap-4"
-    >
-      <div class="p-2.5 rounded-lg bg-sky-tint text-primary shrink-0">
-        <span class="material-symbols-outlined text-2xl" aria-hidden="true">call</span>
-      </div>
-      <div class="min-w-0">
-        <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
-          Telefon
-        </p>
-        <p class="text-sm font-medium text-on-surface truncate">
-          {phone}
-        </p>
-      </div>
-    </a>
-
     <!-- Address Card -->
-    <div class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm flex items-start gap-4 sm:col-span-2 lg:col-span-1">
+    <div class="bg-white p-5 rounded-xl border border-outline-variant/60 shadow-sm flex items-start gap-4">
       <div class="p-2.5 rounded-lg bg-sky-tint text-primary shrink-0">
         <span class="material-symbols-outlined text-2xl" aria-hidden="true">location_on</span>
       </div>
