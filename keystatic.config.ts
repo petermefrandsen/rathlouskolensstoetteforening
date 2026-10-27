@@ -96,7 +96,7 @@ export default config({
         ),
         mobilePayNumber: fields.text({
           label: 'MobilePay Nummer / Boks',
-          defaultValue: '86561844',
+          defaultValue: '234380',
         }),
         mobilePayInstructions: fields.text({
           label: 'MobilePay Instruktionstekst',
@@ -173,15 +173,11 @@ export default config({
         }),
         cvr: fields.text({
           label: 'CVR Nummer',
-          defaultValue: '86561844',
+          defaultValue: '44343630',
         }),
         address: fields.text({
           label: 'Adresse',
           defaultValue: 'Rosensgade 83, 8300 Odder',
-        }),
-        phone: fields.text({
-          label: 'Telefon',
-          defaultValue: '86561844',
         }),
         // Galleri Sektion
         galleryTitle: fields.text({
@@ -222,9 +218,28 @@ export default config({
           label: 'Kontakt Tekst',
           defaultValue: 'Har du spørgsmål til støtteforeningen, arrangementer eller indmeldelse? Skriv eller ring endelig til os.',
         }),
-        contactPerson: fields.text({
-          label: 'Kontaktperson / Bestyrelsesformand (valgfrit)',
-        }),
+        contacts: fields.array(
+          fields.object({
+            title: fields.text({
+              label: 'Titel (f.eks. Formand)',
+              validation: { isRequired: true },
+            }),
+            name: fields.text({
+              label: 'Navn',
+              validation: { isRequired: true },
+            }),
+            phone: fields.text({
+              label: 'Telefonnummer',
+              validation: { isRequired: true },
+            }),
+          }),
+          {
+            label: 'Kontaktpersoner',
+            description: 'Vises i kontaktsektionen og i bunden af siden i den rækkefølge, de står her.',
+            itemLabel: (props) =>
+              [props.fields.title.value, props.fields.name.value].filter(Boolean).join(': ') || 'Ny kontaktperson',
+          }
+        ),
         // Vedtægter (File upload or External URL)
         bylawsFile: fields.file({
           label: 'Vedtægter: Upload fil (PDF)',

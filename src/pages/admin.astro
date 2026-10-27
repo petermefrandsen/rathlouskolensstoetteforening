@@ -2,18 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
-import { createReader } from '@keystatic/core/reader';
-import keystaticConfig from '../../keystatic.config';
+import { getGuide, getSettings } from '../lib/content';
 
-const reader = createReader(process.cwd(), keystaticConfig);
-const guide = await reader.singletons.guide.read();
-const settings = await reader.singletons.settings.read();
+const guide = getGuide();
+const settings = getSettings();
 
 const logoUrl = settings?.logo || '/images/logo.png';
 const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com';
-const cvr = settings?.cvr || '86561844';
+const cvr = settings?.cvr || '44343630';
 const address = settings?.address || 'Rosensgade 83, 8300 Odder';
-const phone = settings?.phone || '86561844';
+const contacts = settings?.contacts || [];
 
 const forEditors = guide?.forEditors || `1. Opret en gratis konto på https://github.com/join med din egen e-mailadresse.
 2. Send dit GitHub-brugernavn til webansvarlig (eller formand for støtteforeningen).
@@ -107,7 +105,7 @@ const tipsAndTricks = guide?.tipsAndTricks || `• MobilePay: Du kan bruge @mobi
 
   <Footer
     address={address}
-    phone={phone}
+    contacts={contacts}
     email={grantEmail}
     cvr={cvr}
   />

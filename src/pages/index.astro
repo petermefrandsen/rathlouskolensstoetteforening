@@ -5,12 +5,9 @@ import Footer from '../components/common/Footer.astro';
 import QuoteCarousel from '../components/home/QuoteCarousel.astro';
 import GallerySection from '../components/home/GallerySection.astro';
 import ContactSection from '../components/home/ContactSection.astro';
-import { createReader } from '@keystatic/core/reader';
-import keystaticConfig from '../../keystatic.config';
+import { getSettings } from '../lib/content';
 
-// Initialize Keystatic reader for data fetching
-const reader = createReader(process.cwd(), keystaticConfig);
-const settings = await reader.singletons.settings.read();
+const settings = getSettings();
 
 // Quotes from CMS (array up to 5 items)
 const quotes = (settings?.quotes || []) as { quote: string; author: string }[];
@@ -26,15 +23,15 @@ const galleryImages = (settings?.galleryImages || []) as {
 const heroTitle = settings?.heroTitle || 'Rathlouskolens Støtteforening';
 const heroSubtitle = settings?.heroSubtitle || 'Støtter op om skolen for elever og personale';
 const heroImage = settings?.heroImage || '/images/uploads/heroImage.svg';
-const mobilePayNumber = settings?.mobilePayNumber || '86561844';
+const mobilePayNumber = settings?.mobilePayNumber || '234380';
 const mobilePayQr = settings?.mobilePayQr || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQI86rJpubHtLBfzayBgHWKSA7LoQE5Mw8kb2arKLr0seiopfGT6eY-vvAWjMVTKmiBcxSoroeFIGWKYY_PxD6zLnCBL2pawvCZiasEGu0G0bukFqvV2xaP0cjl_R8H7Dbb4ltwSkRFzbHtIdYQycDDV0zmgmlXDLE5asPMCV7cL7RnlddirL6CraeHTTlE9iNM6Ykko_pJtDvhMoD2ZGl3am-WZCaUDh8TWPPxJ7k0F3xS0UFqvmE';
 const membershipFee = settings?.membershipFee || 'Kun 150 kroner per år for hele husstanden';
 const membershipUrl = settings?.membershipUrl || 'https://web.minforening.dk/invitation?clubToken=z1_x5AbDfmmD6LgM1PCdhL16NI_4aWVn9pc1qWX2BYqFuohwntawX_JZeU5uJVntK8K8jJH2YZz6y_yyPVTYvA%3D%3D';
 const membershipButtonText = settings?.membershipButtonText || 'Klik her og bliv medlem';
 const grantEmail = settings?.grantEmail || 'stoetteforeningen@rathlouskolen.com';
-const cvr = settings?.cvr || '86561844';
+const cvr = settings?.cvr || '44343630';
 const address = settings?.address || 'Rosensgade 83, 8300 Odder';
-const phone = settings?.phone || '86561844';
+const contacts = settings?.contacts || [];
 const logoUrl = settings?.logo || '/images/logo.png';
 const heroLogoUrl = (settings?.logo && settings.logo !== '/images/logo.png')
   ? settings.logo
@@ -319,9 +316,8 @@ Foreningens indtægter opstår ved forskellige arrangementer afholdt af Støttef
     <ContactSection
       title={settings?.contactTitle}
       subtitle={settings?.contactSubtitle}
-      contactPerson={settings?.contactPerson}
+      contacts={contacts}
       email={grantEmail}
-      phone={phone}
       address={address}
       cvr={cvr}
     />
@@ -329,7 +325,7 @@ Foreningens indtægter opstår ved forskellige arrangementer afholdt af Støttef
 
   <Footer
     address={address}
-    phone={phone}
+    contacts={contacts}
     email={grantEmail}
     cvr={cvr}
     bylawsHref={bylawsHref}
