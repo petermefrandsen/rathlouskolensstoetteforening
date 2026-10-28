@@ -15,6 +15,8 @@ const {
   canonical,
 } = Astro.props;
 
+const buildId = import.meta.env.BUILD_ID;
+
 const siteUrl = 'https://www.rathlouskolensstøtteforening.dk';
 const canonicalUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
 const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
@@ -173,5 +175,33 @@ const jsonLd = {
   </head>
   <body class="bg-background text-on-background min-h-screen pt-20">
     <slot />
+    <script is:inline define:vars={{ buildId }}>
+      // Silently reload when a newer deploy exists, so visitors with an old tab
+      // open (or a restored/home-screen app) don't keep seeing a stale version.
+      (function () {
+        var reloadedKey = 'build-reloaded-for';
+        function isEditing() {
+          var el = document.activeElement;
+          return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+        }
+        function check() {
+          fetch('/version.json', { cache: 'no-store' })
+            .then(function (res) { return res.ok ? res.json() : null; })
+            .then(function (data) {
+              if (!data || !data.id || data.id === buildId || isEditing()) return;
+              // Guard against reload loops if the HTML is served stale by an edge cache.
+              if (sessionStorage.getItem(reloadedKey) === data.id) return;
+              sessionStorage.setItem(reloadedKey, data.id);
+              location.reload();
+            })
+            .catch(function () {});
+        }
+        window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible') check();
+        });
+        setInterval(check, 5 * 60 * 1000);
+      })();
+    </script>
   </body>
 </html>
