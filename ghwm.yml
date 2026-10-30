@@ -11,7 +11,7 @@ workflows:
     version: 2.0.3
     update-config-files: false
   - name: super-linter-lean
-    version: 1.0.3
+    version: 1.0.4
   - name: ghwm-update
     version: 1.0.2
     update-triggers: true
